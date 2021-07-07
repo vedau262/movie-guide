@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:movie_guide/data/model/movies_response.dart';
 
 abstract class MovieEvent extends Equatable{
   @override
@@ -6,4 +7,9 @@ abstract class MovieEvent extends Equatable{
 }
 
 class FetchMovieEvent extends MovieEvent {
+}
+
+class LoadMoreMovieEvent extends MovieEvent {
+  MoviesResponse moviesResponse ;
+  LoadMoreMovieEvent(this.moviesResponse);
 }

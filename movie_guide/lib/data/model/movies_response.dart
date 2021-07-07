@@ -1,22 +1,27 @@
+import 'package:movie_guide/bloc/movie/movie_state.dart';
+
 import 'movie.dart';
 
 class MoviesResponse {
+  String? title;
+  String? link;
   int? totalPages;
-  int? page;
-  int? totalResults;
+  int? page=1;
+  int? totalResults = 100;
   List<Movie>? results;
-  String? error = '';
+  PostStatus? status = PostStatus.initial;
 
   MoviesResponse(
       {
+        this.title,
+        this.link,
         this.totalPages,
         this.page,
         this.totalResults,
-        this.results
+        this.results,
+        this.status
       }
   );
-
-  MoviesResponse.error(this.error);
 
   MoviesResponse.fromJson(Map<String, dynamic> json) {
     page = json['page'];
@@ -48,6 +53,14 @@ class MoviesResponse {
       return results!;
     } else {
       return list;
+    }
+  }
+
+  int getPage(){
+    if (page!=null) {
+      return page!;
+    } else {
+      return 0;
     }
   }
 }

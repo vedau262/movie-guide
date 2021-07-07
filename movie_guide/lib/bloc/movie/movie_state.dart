@@ -1,7 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:movie_guide/data/model/MoviesResponse.dart';
+import 'package:movie_guide/data/model/movies_response.dart';
 import 'package:movie_guide/data/model/movie.dart';
+import 'package:movie_guide/strings/strings.dart';
 
 
 
@@ -46,35 +47,45 @@ class MoviesErrorState extends MoviesState {
 
 enum PostStatus { initial, success, failure }
 
-class PostState extends Equatable {
-  const PostState({
-    this.status = PostStatus.initial,
-    this.posts = const <Movie>[],
-    this.hasReachedMax = false,
-  });
+abstract class PostState extends Equatable {
 
-  final PostStatus status;
-  final List<Movie> posts;
-  final bool hasReachedMax;
+}
 
-  PostState copyWith({
-    PostStatus? status,
-    List<Movie>? posts,
-    bool? hasReachedMax,
-  }) {
-    return PostState(
-      status: status ?? this.status,
-      posts: posts ?? this.posts,
-      hasReachedMax: hasReachedMax ?? this.hasReachedMax,
-    );
+class LoadMovieState extends PostState{
+
+  List<MoviesResponse> responseList;
+
+  List<MoviesResponse> result = List.empty();
+  LoadMovieState(this.responseList);
+
+  void addResult(MoviesResponse moviesResponse){
+    result.add(moviesResponse);
   }
 
   @override
-  String toString() {
-    return '''PostState { status: $status, hasReachedMax: $hasReachedMax, posts: ${posts.length} }''';
+  List<Object> get props => [responseList];
+}
+
+class UpdateMovieState extends PostState{
+
+  MoviesResponse response;
+  UpdateMovieState(this.response);
+
+  void updateResult(MoviesResponse moviesResponse){
+    response = moviesResponse;
   }
 
   @override
-  List<Object> get props => [status, posts, hasReachedMax];
+  List<Object> get props => [response];
+}
+
+class LoadMoviesErrorState extends PostState {
+
+  String message;
+
+  LoadMoviesErrorState({required this.message});
+
+  @override
+  List<Object> get props => [message];
 }
 

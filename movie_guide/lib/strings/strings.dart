@@ -10,4 +10,17 @@ class AppStrings {
   // title
   static final String  popularMovieTitle = "Popular Movies";
   static final String  upcomingMovieTitle = "Upcoming Movies";
+  static final String  topRateMovieTitle = "Top Rated";
+
+  static final List<String> titleList = [
+    popularMovieTitle,
+    upcomingMovieTitle,
+    topRateMovieTitle
+  ];
+
+  static final List<String> linkList = [
+    "https://api.themoviedb.org/3/movie/popular?api_key=667578b3f0a40e1525e77e53e1b144f8&language=en-US&page=",
+    "https://api.themoviedb.org/3/movie/upcoming?api_key=667578b3f0a40e1525e77e53e1b144f8&language=en-US&page=",
+    "https://api.themoviedb.org/3/movie/top_rated?api_key=667578b3f0a40e1525e77e53e1b144f8&language=en-US&page="
+  ];
 }
