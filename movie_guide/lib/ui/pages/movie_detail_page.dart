@@ -25,21 +25,22 @@ class MovieDetailPage extends StatelessWidget {
         padding: EdgeInsets.all(0.0),
         child: Stack(
           children: [
-            Expanded(
-              child: Image.network(
-                movie.getBackdropPath(),
-                width: screen_width,
-                height: backdrop_height,
-                fit: BoxFit.fill,
-              ),
+            Image.network(
+              movie.getBackdropPath(),
+              width: screen_width,
+              height: backdrop_height,
+              fit: BoxFit.fill,
             ),
+
             IconButton(
               color: Colors.white,
               padding: EdgeInsets.only(top: 25),
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: Icon(Icons.arrow_back)),
+              icon: Icon(Icons.arrow_back)
+            ),
+            
             Container(
               padding: EdgeInsets.all(16),
               margin: EdgeInsets.only(top: backdrop_height-backdrop_height/4),
@@ -56,12 +57,15 @@ class MovieDetailPage extends StatelessWidget {
                         ),
                       ),
 
-                      Container(
+                      Expanded(child: Container(
                         margin: EdgeInsets.only(left: 10),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+
                             Text("${movie.title}",
+                              overflow: TextOverflow.ellipsis,
+                              // maxLines: 1,
                               style: TextStyle(
                                 fontSize: 20,
                                 color: Colors.redAccent,
@@ -76,7 +80,7 @@ class MovieDetailPage extends StatelessWidget {
                             ),
                           ],
                         ),
-                      )
+                      ))
                     ],
                   ),
 
