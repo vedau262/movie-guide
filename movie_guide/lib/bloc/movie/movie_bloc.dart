@@ -35,8 +35,8 @@ class MovieBloc extends Bloc<MovieEvent, PostState> {
         yield LoadMoviesErrorState(message: e.toString());
       }
     } else if(event is LoadMoreMovieEvent){
+        yield MoviesLoadingState(event.moviesResponse.title.toString());
         MoviesResponse current  = event.moviesResponse;
-        yield UpdateMovieState(current);
 
         try{
           print("LoadMoreMovieEvent current.length ${current.getResult().length}");

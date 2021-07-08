@@ -60,6 +60,14 @@ class MoviesResponse {
     if (page!=null) {
       return page!;
     } else {
+      return 1;
+    }
+  }
+
+  int getTotalPage(){
+    if (totalPages!=null) {
+      return totalPages!;
+    } else {
       return 0;
     }
   }

@@ -15,10 +15,10 @@ class MoviesInitialState extends MoviesState {
   List<Object> get props => [];
 }
 
-class MoviesLoadingState extends MoviesState {
+/*class MoviesLoadingState extends MoviesState {
   @override
   List<Object> get props => [];
-}
+}*/
 
 class MoviesLoadedState extends MoviesState {
 
@@ -49,6 +49,13 @@ enum PostStatus { initial, success, failure }
 
 abstract class PostState extends Equatable {
 
+}
+
+class MoviesLoadingState extends PostState {
+  String category;
+  MoviesLoadingState(this.category);
+  @override
+  List<Object> get props => [];
 }
 
 class LoadMovieState extends PostState{

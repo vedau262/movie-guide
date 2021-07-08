@@ -17,7 +17,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late MovieBloc movieBloc;
-  late LoadMovieState inputState;
+  late List<MoviesResponse> responseList;
 
   @override
   void initState() {
@@ -94,18 +94,19 @@ class _HomePageState extends State<HomePage> {
                           } else {
                             return buildLoading();
                           }*/
+                            print("BlocBuilder home page");
                             if(state is LoadMovieState){
                               if(state.responseList.isEmpty){
                                 return buildLoading();
                               }
                               else{
-                                inputState = state;
-                                return buildMoviesList(state);
+                                responseList = state.responseList;
+                                return buildMoviesList(responseList);
                               }
 
                             } else {
                               print("buildMoviesList(inputState);");
-                              return buildMoviesList(inputState);
+                              return buildMoviesList(responseList);
                             }
                           },
                           ),
@@ -140,13 +141,13 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget buildMoviesList(LoadMovieState state){
+  Widget buildMoviesList(List<MoviesResponse> responseList){
 
 
       List<MovieList> data = [];
       //i<5, pass your dynamic limit as per your requirment
-      for (int i = 0; i < state.responseList.length; i++) {
-        data.add(MovieList(state.responseList[i], movieBloc));
+      for (int i = 0; i < responseList.length; i++) {
+        data.add(MovieList(responseList[i], movieBloc));
       }
 
 

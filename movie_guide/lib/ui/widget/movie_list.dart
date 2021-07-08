@@ -30,9 +30,13 @@ class MovieListState extends State<MovieList>{
 
   MovieListState(this.response, this.movieBloc);
 
+  bool _loading = false;
+  late ScrollController scrollController;
+
   @override
   void initState() {
     super.initState();
+    scrollController = new ScrollController()..addListener(_scrollListener);
   }
 
   @override
@@ -53,9 +57,41 @@ class MovieListState extends State<MovieList>{
                 )
             ),
           ),
-
+          /*ElevatedButton(
+            child: Text("load more"),
+            onPressed: (){
+              movieBloc.add(LoadMoreMovieEvent(this.response));
+            },
+          ),*/
           Container(
-            child: BlocBuilder<MovieBloc, PostState>(builder: (_, state) {
+              child: Stack(
+                children: [
+                  Column(
+                    children: [
+                      _buildMoviesList(response.getResult()),
+                    ],
+                  ),
+
+                  BlocBuilder<MovieBloc, PostState>(builder: (_, state) {
+                      if(state is MoviesLoadingState && state.category == this.response.title) {
+                        _loading = true;
+                        return Container(
+                          margin: EdgeInsets.only(top:100 ),
+                            alignment: Alignment.center,
+                            child: CircularProgressIndicator()
+                        );
+                      } else {
+                        _loading = false;
+                        return SizedBox(width: 0, height: 0,);
+                      }
+                    },
+                  )
+                ],
+              ),
+
+            /*child: BlocBuilder<MovieBloc, PostState>(builder: (_, state) {
+              print("BlocBuilder for ${this.response.title}");
+
               if(state is UpdateMovieState && state.response.title == this.response.title){
                 print("UpdateMovieState for ${state.response.title}");
                 return Column(
@@ -64,7 +100,7 @@ class MovieListState extends State<MovieList>{
                         child: Text("load more"),
                         onPressed: (){
                           print("state.responseList ${state.response.title}");
-                          movieBloc.add(LoadMoreMovieEvent(state.response));
+                          movieBloc.add(LoadMoreMovieEvent(this.response));
                         },
                       ),
                        _buildMoviesList(state.response.getResult()),
@@ -83,9 +119,10 @@ class MovieListState extends State<MovieList>{
                     _buildMoviesList(response.getResult()),
                   ],
                 );
-              }
-            },
-          ),
+              }*/
+            // },
+          // ),
+
           ),
 
           // _buildMoviesList(response.getResult()),
@@ -100,6 +137,7 @@ class MovieListState extends State<MovieList>{
         // width: 200,
       // height: MediaQuery.of(context).size.height/5,
       child: ListView.builder(
+        controller: scrollController,
         itemCount: movies.length,
         scrollDirection: Axis.horizontal,
         itemBuilder: (ctx, pos) {
@@ -123,6 +161,26 @@ class MovieListState extends State<MovieList>{
         },
       )
     );
+  }
+
+  void _scrollListener() {
+    if (scrollController.position.pixels ==
+        scrollController.position.maxScrollExtent) {
+      print('Page reached end of page');
+      loadMore();
+    }
+  }
+
+  void loadMore(){
+    if(_loading || this.response.getPage()>=this.response.getTotalPage()){
+      //not loading continuously
+      print("_loading $_loading");
+      print("this.response.getPage() ${this.response.getPage()}");
+      print("this.response.getTotalPage() ${this.response.getTotalPage()}");
+      return;
+    }
+
+    movieBloc.add(LoadMoreMovieEvent(this.response));
   }
 
   void navigateToMovieDetailPage(BuildContext context, Movie movie) {
