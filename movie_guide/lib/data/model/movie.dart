@@ -1,19 +1,51 @@
 import 'package:movie_guide/strings/strings.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'movie.g.dart';
+
+@JsonSerializable()
 class Movie {
+
+  @JsonKey(name: 'vote_average')
   double? voteAverage;
+
+  @JsonKey(name: 'id')
   int? id;
+
+  @JsonKey(name: 'vote_count')
   int? voteCount;
+
+  @JsonKey(name: 'release_date')
   String? releaseDate;
+
+  @JsonKey(name: 'adult')
   bool? adult;
+
+  @JsonKey(name: 'backdrop_path')
   String? backdropPath;
+
+  @JsonKey(name: 'title')
   String? title;
+
+  @JsonKey(name: 'genre_ids')
   List<int>? genreIds;
+
+  @JsonKey(name: 'popularity')
   double? popularity;
+
+  @JsonKey(name: 'original_language')
   String? originalLanguage;
+
+  @JsonKey(name: 'original_title')
   String? originalTitle;
+
+  @JsonKey(name: 'poster_path')
   String? posterPath;
+
+  @JsonKey(name: 'overview')
   String? overview;
+
+  @JsonKey(name: 'video')
   bool? video;
 
   Movie(
@@ -29,45 +61,12 @@ class Movie {
         this.originalTitle,
         this.posterPath,
         this.overview,
-        this.video});
+        this.video
+      });
 
-  Movie.wtf(this.id);
+  factory Movie.fromJson(Map<String, dynamic> json) => _$MovieFromJson(json);
 
-  Movie.fromJson(Map<String, dynamic> json) {
-    voteAverage = json['vote_average'].toDouble();
-    id = json['id'];
-    voteCount = json['vote_count'];
-    releaseDate = json['release_date'];
-    adult = json['adult'];
-    backdropPath = json['backdrop_path'];
-    title = json['title'];
-    genreIds = json['genre_ids'].cast<int>();
-    popularity = json['popularity'] as double;
-    originalLanguage = json['original_language'];
-    originalTitle = json['original_title'];
-    posterPath = json['poster_path'];
-    overview = json['overview'];
-    video = json['video'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    // data['vote_average'] = this.voteAverage;
-    data['id'] = this.id;
-    data['vote_count'] = this.voteCount;
-    data['release_date'] = this.releaseDate;
-    data['adult'] = this.adult;
-    data['backdrop_path'] = this.backdropPath;
-    data['title'] = this.title;
-    data['genre_ids'] = this.genreIds;
-    data['popularity'] = this.popularity;
-    data['original_language'] = this.originalLanguage;
-    data['original_title'] = this.originalTitle;
-    data['poster_path'] = this.posterPath;
-    data['overview'] = this.overview;
-    data['video'] = this.video;
-    return data;
-  }
+  Map<String, dynamic> toJson() => _$MovieToJson(this);
 
   String getPosterPath() {
     return this.posterPath!=null ? (AppStrings.imageHostUrl + this.posterPath.toString()) : AppStrings.posterPathDefault;

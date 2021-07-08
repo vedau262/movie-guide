@@ -55,7 +55,7 @@ class MoviesRepositoryImpl implements MoviesRepository {
       moviesResponse.title =title;
       moviesResponse.page = page + 1;
       moviesResponse.link =link;
-      moviesResponse.status = PostStatus.success;
+      moviesResponse.status = LoadingStatus.success;
       return moviesResponse;
     } else {
       throw Exception();

@@ -1,15 +1,25 @@
+import 'package:json_annotation/json_annotation.dart';
 import 'package:movie_guide/bloc/movie/movie_state.dart';
-
 import 'movie.dart';
 
+part 'movies_response.g.dart';
+
+@JsonSerializable()
 class MoviesResponse {
   String? title;
   String? link;
+
+
+  @JsonKey(name: 'total_pages')
   int? totalPages;
+
   int? page=1;
+
+  @JsonKey(name: 'total_results')
   int? totalResults = 100;
+
   List<Movie>? results;
-  PostStatus? status = PostStatus.initial;
+  LoadingStatus? status = LoadingStatus.initial;
 
   MoviesResponse(
       {
@@ -23,29 +33,9 @@ class MoviesResponse {
       }
   );
 
-  MoviesResponse.fromJson(Map<String, dynamic> json) {
-    page = json['page'];
-    totalPages = json['total_pages'] ;
+  factory MoviesResponse.fromJson(Map<String, dynamic> json) => _$MoviesResponseFromJson(json);
 
-    totalResults = json['total_results'] ;
-    if (json['results'] != null) {
-      results = [];
-      json['results'].forEach((v) {
-        results?.add(new Movie.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['page'] = this.page;
-    data['totalPages'] = this.totalPages;
-    data['total_results'] = this.totalResults;
-    if (this.results != null) {
-       data['results'] = this.results?.map((movies) => movies.toJson()).toList();
-    }
-    return data;
-  }
+  Map<String, dynamic> toJson() => _$MoviesResponseToJson(this);
 
   List<Movie> getResult() {
     List<Movie> list = new List.empty();

@@ -1,11 +1,10 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_guide/data/model/movie.dart';
 
 class MovieDetailPage extends StatelessWidget {
 
-  Movie movie;
+ Movie movie;
 
   MovieDetailPage({required this.movie});
 
@@ -108,3 +107,5 @@ class MovieDetailPage extends StatelessWidget {
     );
   }
 }
+
+

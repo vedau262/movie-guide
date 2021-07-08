@@ -6,6 +6,9 @@ import 'package:movie_guide/bloc/movie/movie_event.dart';
 import 'package:movie_guide/bloc/movie/movie_state.dart';
 import 'package:movie_guide/data/model/movies_response.dart';
 import 'package:movie_guide/data/model/movie.dart';
+import 'package:movie_guide/src/widgets/box_button.dart';
+import 'package:movie_guide/src/widgets/box_text.dart';
+import 'package:movie_guide/src/widgets/input_field.dart';
 import 'package:movie_guide/strings/strings.dart';
 import 'package:movie_guide/ui/pages/movie_detail_page.dart';
 import 'package:movie_guide/ui/widget/movie_list.dart';
@@ -60,6 +63,7 @@ class _HomePageState extends State<HomePage> {
               body: SingleChildScrollView(
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 16),
+
                   child: Column(
                     children: [
                       Text(
@@ -72,7 +76,7 @@ class _HomePageState extends State<HomePage> {
 
                       ),
                       Container(
-                        child: BlocListener<MovieBloc, PostState>(
+                        child: BlocListener<MovieBloc, LoadingState>(
                           listener: (context, state) {
                             if (state is LoadMoviesErrorState) {
                               ScaffoldMessenger.of(context).showSnackBar(
@@ -82,18 +86,7 @@ class _HomePageState extends State<HomePage> {
                               );
                             }
                           },
-                          child: BlocBuilder<MovieBloc, PostState>(builder: (_, state) {
-                            /*if (state is MoviesInitialState) {
-                            return buildLoading();
-                          } else if (state is MoviesLoadingState) {
-                            return buildLoading();
-                          } else if (state is MoviesLoadedState) {
-                            return buildMoviesList(state);
-                          } else if (state is MoviesErrorState) {
-                            return buildErrorUi(state.message);
-                          } else {
-                            return buildLoading();
-                          }*/
+                          child: BlocBuilder<MovieBloc, LoadingState>(builder: (_, state) {
                             print("BlocBuilder home page");
                             if(state is LoadMovieState){
                               if(state.responseList.isEmpty){
@@ -101,12 +94,12 @@ class _HomePageState extends State<HomePage> {
                               }
                               else{
                                 responseList = state.responseList;
-                                return buildMoviesList(responseList);
+                                return buildMoviesList(this.responseList);
                               }
 
                             } else {
                               print("buildMoviesList(inputState);");
-                              return buildMoviesList(responseList);
+                              return buildMoviesList(this.responseList);
                             }
                           },
                           ),
@@ -124,8 +117,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget buildLoading() {
-    return Center(
-      child: CircularProgressIndicator(),
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        CircularProgressIndicator(),
+      ],
     );
   }
 
@@ -142,31 +140,16 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget buildMoviesList(List<MoviesResponse> responseList){
-
-
-      List<MovieList> data = [];
-      //i<5, pass your dynamic limit as per your requirment
-      for (int i = 0; i < responseList.length; i++) {
-        data.add(MovieList(responseList[i], movieBloc));
-      }
-
-
+    List<MovieList> data = [];
+    for (int i = 0; i < responseList.length; i++) {
+      data.add(MovieList(responseList[i], movieBloc));
+    }
 
     return SingleChildScrollView(
         child:Column(children: data
         )
     );
   }
-
-  /*Widget buildMoviesList(MoviesLoadedState state){
-    return SingleChildScrollView(
-      child:Column(children: [
-        MovieList(AppStrings.popularMovieTitle, state.popularResponse.getResult()),
-        MovieList(AppStrings.upcomingMovieTitle, state.upcomingResponse.getResult()),
-      ],
-    )
-    );
-  }*/
 
   void navigateToAboutPage(BuildContext context) {
 

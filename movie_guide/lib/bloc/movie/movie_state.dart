@@ -5,90 +5,41 @@ import 'package:movie_guide/data/model/movie.dart';
 import 'package:movie_guide/strings/strings.dart';
 
 
+enum LoadingStatus { initial, success, failure }
 
-abstract class MoviesState extends Equatable {
-
-}
-
-class MoviesInitialState extends MoviesState {
-  @override
-  List<Object> get props => [];
-}
-
-/*class MoviesLoadingState extends MoviesState {
-  @override
-  List<Object> get props => [];
-}*/
-
-class MoviesLoadedState extends MoviesState {
-
-  MoviesResponse popularResponse, upcomingResponse;
-
-  MoviesLoadedState({
-      required this.popularResponse,
-      required this.upcomingResponse
-  });
-
-  @override
-  List<Object> get props => [popularResponse, upcomingResponse];
-}
-
-class MoviesErrorState extends MoviesState {
-
-  String message;
-
-  MoviesErrorState({required this.message});
-
-  @override
-  List<Object> get props => [message];
-}
-
-
-
-enum PostStatus { initial, success, failure }
-
-abstract class PostState extends Equatable {
+abstract class LoadingState extends Equatable {
 
 }
 
-class MoviesLoadingState extends PostState {
-  String category;
+class MoviesLoadingState extends LoadingState {
+  final String category;
   MoviesLoadingState(this.category);
+
   @override
   List<Object> get props => [];
 }
 
-class LoadMovieState extends PostState{
+class LoadMovieState extends LoadingState{
 
-  List<MoviesResponse> responseList;
-
-  List<MoviesResponse> result = List.empty();
+  final List<MoviesResponse> responseList;
   LoadMovieState(this.responseList);
-
-  void addResult(MoviesResponse moviesResponse){
-    result.add(moviesResponse);
-  }
 
   @override
   List<Object> get props => [responseList];
 }
 
-class UpdateMovieState extends PostState{
+class UpdateMovieState extends LoadingState{
 
-  MoviesResponse response;
+  final MoviesResponse response;
   UpdateMovieState(this.response);
-
-  void updateResult(MoviesResponse moviesResponse){
-    response = moviesResponse;
-  }
 
   @override
   List<Object> get props => [response];
 }
 
-class LoadMoviesErrorState extends PostState {
+class LoadMoviesErrorState extends LoadingState {
 
-  String message;
+  final String message;
 
   LoadMoviesErrorState({required this.message});
 

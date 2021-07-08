@@ -5,7 +5,7 @@ import 'package:movie_guide/bloc/movie/movie_bloc.dart';
 import 'package:movie_guide/data/repository/movies_repository.dart';
 import 'package:movie_guide/ui/pages/home_page.dart';
 
-import 'data/model/movie.dart';
+
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

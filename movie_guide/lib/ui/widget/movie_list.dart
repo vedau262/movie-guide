@@ -40,6 +40,12 @@ class MovieListState extends State<MovieList>{
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    scrollController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       child: Column(
@@ -72,7 +78,7 @@ class MovieListState extends State<MovieList>{
                     ],
                   ),
 
-                  BlocBuilder<MovieBloc, PostState>(builder: (_, state) {
+                  BlocBuilder<MovieBloc, LoadingState>(builder: (_, state) {
                       if(state is MoviesLoadingState && state.category == this.response.title) {
                         _loading = true;
                         return Container(
@@ -88,40 +94,6 @@ class MovieListState extends State<MovieList>{
                   )
                 ],
               ),
-
-            /*child: BlocBuilder<MovieBloc, PostState>(builder: (_, state) {
-              print("BlocBuilder for ${this.response.title}");
-
-              if(state is UpdateMovieState && state.response.title == this.response.title){
-                print("UpdateMovieState for ${state.response.title}");
-                return Column(
-                    children: [
-                      ElevatedButton(
-                        child: Text("load more"),
-                        onPressed: (){
-                          print("state.responseList ${state.response.title}");
-                          movieBloc.add(LoadMoreMovieEvent(this.response));
-                        },
-                      ),
-                       _buildMoviesList(state.response.getResult()),
-                    ],
-              );
-
-            } else {
-                return Column(
-                  children: [
-                    ElevatedButton(
-                      child: Text("load more"),
-                      onPressed: (){
-                        movieBloc.add(LoadMoreMovieEvent(this.response));
-                      },
-                    ),
-                    _buildMoviesList(response.getResult()),
-                  ],
-                );
-              }*/
-            // },
-          // ),
 
           ),
 

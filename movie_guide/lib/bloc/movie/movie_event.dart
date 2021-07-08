@@ -10,6 +10,6 @@ class FetchMovieEvent extends MovieEvent {
 }
 
 class LoadMoreMovieEvent extends MovieEvent {
-  MoviesResponse moviesResponse ;
+  final MoviesResponse moviesResponse ;
   LoadMoreMovieEvent(this.moviesResponse);
 }
