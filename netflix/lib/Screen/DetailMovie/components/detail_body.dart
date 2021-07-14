@@ -7,6 +7,7 @@ import 'package:netflix/Base/base_view.dart';
 import 'package:netflix/Base/body_widget.dart';
 import 'package:netflix/Base/dependency_injection.dart';
 import 'package:netflix/Base/loading_dialog.dart';
+import 'package:netflix/Screen/DetailMovie/detail_state.dart';
 import 'package:netflix/config//ConfigBase.dart';
 import 'package:netflix/config/Result.dart';
 import 'package:netflix/model/movie.dart';
@@ -17,8 +18,7 @@ import 'package:netflix/model/movie.dart';
 import 'package:netflix/model/trailer.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:provider/provider.dart';
-
-import '../detail_state.dart';
+import 'package:netflix/utilities.dart';
 
 class DetailBody extends StatelessWidget {
   @override
@@ -67,7 +67,6 @@ class MovieDetailPage extends BaseState<DetailMovieBloc, Body>{
             ),
 
             IconButton(
-                color: Colors.white,
                 padding: EdgeInsets.only(top: 25),
                 onPressed: () {
                   Navigator.pop(context);
@@ -76,9 +75,14 @@ class MovieDetailPage extends BaseState<DetailMovieBloc, Body>{
             ),
 
             Container(
-              padding: EdgeInsets.all(16),
+              // color: Colors.red,
+              // padding: EdgeInsets.all(16),
               margin: EdgeInsets.only(
-                  top: backdropHeight - backdropHeight / 4),
+                  left: 16,
+                  right: 16,
+                  top: backdropHeight - backdropHeight / 4,
+                  bottom: 16,
+                ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -87,7 +91,7 @@ class MovieDetailPage extends BaseState<DetailMovieBloc, Body>{
                   PlayTrailerBody(context, bloc.trailerVideoId).getBuilder(),
                 ],
               ),
-            )
+            ),
           ],
         )
     );
@@ -125,15 +129,12 @@ class MovieDetail extends StatelessWidget{
                       // maxLines: 1,
                       style: TextStyle(
                         fontSize: 20,
-                        color: Colors.redAccent,
                         height: 3,
                       ),
                     ),
 
                     Text("User score: ${movie.voteAvg}",
-                      style: TextStyle(
-                        fontSize: 15,
-                      ),
+                      style: normalTextStyle,
                     ),
                   ],
                 ),
@@ -143,24 +144,16 @@ class MovieDetail extends StatelessWidget{
 
           Text(
             "Story",
-            style: TextStyle(
-              fontSize: 20,
-              height: 2,
-            ),
+            style: subheadingStyle,
           ),
 
           Text(
             "${movie.overview}",
-            style: TextStyle(
-              fontSize: 15,
-            ),
+            style: normalTextStyle,
           ),
           Text(
             "Trailer:",
-            style: TextStyle(
-              fontSize: 20,
-              height: 2,
-            ),
+            style: subheadingStyle,
           )
         ],
       ),

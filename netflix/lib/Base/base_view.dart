@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:netflix/Base/toast.dart';
+import 'package:oktoast/oktoast.dart';
 
 import 'BaseBloc.dart';
 import 'loading_dialog.dart';
@@ -20,6 +22,7 @@ abstract class BaseState<V extends BaseBloc, T extends StatefulWidget> extends S
       }
     });
     bloc.error.listen((value) {
+      Toast.show(value.error.message.toString(), context);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(value.error.message ?? "Some thing went wrong!")));
     });
     initBloc();

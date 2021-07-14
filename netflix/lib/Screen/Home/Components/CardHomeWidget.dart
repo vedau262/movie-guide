@@ -53,11 +53,15 @@ class MovieCard extends StatelessWidget {
           flex: 0,
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: Constant.DEFAULT_PADDING),
-            child: TextExt.defaultText(
-                movie.title, Colors.black, FontWeight.bold, 18,
-                textAlign: TextAlign.center),
+            child: Text(
+                movie.title.toString(),
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 25,
+                 ),
+               )
+            ),
           ),
-        ),
         Flexible(
           flex: 1,
           child: Padding(
@@ -67,8 +71,13 @@ class MovieCard extends StatelessWidget {
                 children: [
                   Icon(Icons.star),
                   SizedBox(width: 5),
-                  TextExt.defaultText('${movie.voteAvg?.toDouble().toString()} (${movie.voteCount} votes)', Colors.black,
-                      FontWeight.normal, 15)
+                  Text(
+                    '${movie.voteAvg?.toDouble().toString()} (${movie.voteCount} votes)',
+                    style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: 15,
+                    ),
+                  )
                 ],
               )),
         )

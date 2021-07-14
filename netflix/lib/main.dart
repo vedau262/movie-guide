@@ -10,10 +10,15 @@ import 'package:netflix/Screen/Tabbar/RootTabbar.dart';
 import 'package:provider/provider.dart';
 
 import 'Base/dependency_injection.dart';
+import 'Base/theme/ThemeManager.dart';
 import 'model/movie.dart';
 
 void main() {
   // startDartIn(appModule);
+  return runApp(ChangeNotifierProvider<ThemeNotifier>(
+    create: (_) => new ThemeNotifier(),
+    child: MyApp(),
+  ));
   setupLocator();
   runApp(MyApp());
 }
@@ -22,37 +27,81 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Movie App',
-      theme: ThemeData(
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      initialRoute: HomeRoute.routeId,
-      onGenerateRoute: (RouteSettings settings) {
-        switch (settings.name) {
-          case HomeRoute.routeId:
-            return MaterialPageRoute(
-              builder: (context) {
-                return RootTabbar();
-              }
-            );
-          case DetailMovieRoute.routeId:
-            var arguments = settings.arguments as Movie;
-            return MaterialPageRoute(
-              builder: (context) {
-                return MultiProvider(
-                  providers: [
-                    Provider<DetailMovieBloc>(
-                        create: (_) => DetailMovieBloc(arguments),
-                        dispose: (_, bloc) => bloc.dispose()),
-                  ],
-                  child: DetailMovieScreen(),
+    return Consumer<ThemeNotifier>(
+        builder: (context, theme, _) => MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Movie App',
+              theme: theme.getTheme(),
+          // theme: ThemeData(
+          //   visualDensity: VisualDensity.adaptivePlatformDensity,
+          // ),
+          initialRoute: HomeRoute.routeId,
+          onGenerateRoute: (RouteSettings settings) {
+            switch (settings.name) {
+              case HomeRoute.routeId:
+                return MaterialPageRoute(
+                  builder: (context) {
+                    return RootTabbar();
+                  }
                 );
-              },
-            );
-        }
-      },
+              case DetailMovieRoute.routeId:
+                var arguments = settings.arguments as Movie;
+                return MaterialPageRoute(
+                  builder: (context) {
+                    return MultiProvider(
+                      providers: [
+                        Provider<DetailMovieBloc>(
+                            create: (_) => DetailMovieBloc(arguments),
+                            dispose: (_, bloc) => bloc.dispose()),
+                      ],
+                      child: DetailMovieScreen(),
+                    );
+                  },
+                );
+            }
+          },
+      ),
+    );
+  }
+}
+
+class MyApp_1 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<ThemeNotifier>(
+      builder: (context, theme, _) => MaterialApp(
+        theme: theme.getTheme(),
+        // theme: ThemeData(
+        //   visualDensity: VisualDensity.adaptivePlatformDensity,
+        // ),
+        home: Scaffold(
+          appBar: AppBar(
+            title: Text('Hybrid Theme'),
+          ),
+          body: Row(
+            children: [
+              Container(
+                child: FlatButton(
+                  onPressed: () => {
+                    print('Set Light Theme'),
+                    theme.setLightMode(),
+                  },
+                  child: Text('Set Light Theme'),
+                ),
+              ),
+              Container(
+                child: FlatButton(
+                  onPressed: () => {
+                    print('Set Dark theme'),
+                    theme.setDarkMode(),
+                  },
+                  child: Text('Set Dark theme'),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

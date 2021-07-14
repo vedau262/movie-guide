@@ -31,11 +31,7 @@ class LoadingDialog extends CupertinoAlertDialog {
     }
   }
   static hide() {
-    print("AAAAAAAAAAAAAAAAAAAAAA ${_singleton}");
-    print("AAAAAAAAAAAAAAAAAAAAAA ${_singleton?.showing}");
-    print("AAAAAAAAAAAAAAAAAAAAAA ${_singleton?.parentContext}");
     if (_singleton != null && _singleton?.showing == true && _singleton?.parentContext != null) {
-      print("AAAAAAAAAAAAAAAAAAAAAA");
       Navigator.removeRoute(_singleton!.parentContext, ModalRoute.of(_singleton!.currentContext!)!);
       _singleton = null;
     }
@@ -49,18 +45,23 @@ class LoadingDialog extends CupertinoAlertDialog {
         builder: (BuildContext context, BoxConstraints constraints) {
           return Center(
             child: Container(
-              width: 120,
-              height: 120,
-              child: CupertinoPopupSurface(
-                child: Semantics(
-                  namesRoute: true,
-                  scopesRoute: true,
-                  explicitChildNodes: true,
-                  child: const Center(
-                    child: CupertinoActivityIndicator(),
-                  ),
-                ),
-              ),
+              width: 50,
+              height: 50,
+              child: CircularProgressIndicator(
+                color: Colors.red,
+                backgroundColor: Colors.grey,
+                strokeWidth: 5,
+              )
+              // CupertinoPopupSurface(
+              //   child: Semantics(
+              //     namesRoute: true,
+              //     scopesRoute: true,
+              //     explicitChildNodes: true,
+              //     child: const Center(
+              //       child: CupertinoActivityIndicator(),
+              //     ),
+              //   ),
+              // ),
             ),
           );
         },

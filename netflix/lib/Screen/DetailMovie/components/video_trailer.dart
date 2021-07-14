@@ -4,7 +4,7 @@ import 'package:netflix/config/Result.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
-import '../detail_movie_bloc.dart';
+import 'package:netflix/Screen/DetailMovie/detail_movie_bloc.dart';
 
 class VideoTrailer extends StatefulWidget {
   String videoLink = "";

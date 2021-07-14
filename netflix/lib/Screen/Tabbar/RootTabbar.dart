@@ -7,6 +7,7 @@ import 'package:netflix/Network/Service/MovieCategory/MovieRepo.dart';
 import 'package:netflix/Screen/Home/HomeBloc.dart';
 import 'package:netflix/Screen/Home/HomeScreen.dart';
 import 'package:provider/provider.dart';
+
 class RootTabbar extends StatefulWidget {
   RootTabbar({Key? key}) : super(key: key);
 
@@ -17,6 +18,7 @@ class RootTabbar extends StatefulWidget {
 class _RootTabbarState extends State<RootTabbar> {
   List<Widget> listScreens = [];
   int _currentIndex = 0;
+
   @override
   void initState() {
     super.initState();
@@ -39,7 +41,6 @@ class _RootTabbarState extends State<RootTabbar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       body: DefaultTabController(
           length: listScreens.length,
           child: Scaffold(
@@ -58,12 +59,14 @@ class _RootTabbarState extends State<RootTabbar> {
                   icon: Icon(Icons.home),
                   title: Text('Home'),
                   activeColor: Colors.red,
+                  inactiveColor: Colors.grey,
                   textAlign: TextAlign.center,
                 ),
                 BottomNavyBarItem(
                   icon: Icon(Icons.apps),
                   title: Text('Category'),
                   activeColor: Colors.red,
+                  inactiveColor: Colors.grey,
                   textAlign: TextAlign.center,
                 ),
                 BottomNavyBarItem(
@@ -71,6 +74,7 @@ class _RootTabbarState extends State<RootTabbar> {
                   title: Text(
                     'Favorite',
                   ),
+                  inactiveColor: Colors.grey,
                   activeColor: Colors.red,
                   textAlign: TextAlign.center,
                 ),
@@ -78,6 +82,7 @@ class _RootTabbarState extends State<RootTabbar> {
                   icon: Icon(Icons.settings),
                   title: Text('Settings'),
                   activeColor: Colors.red,
+                  inactiveColor: Colors.grey,
                   textAlign: TextAlign.center,
                 ),
               ],

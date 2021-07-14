@@ -17,9 +17,9 @@ class Movie implements Decodable<Movie> {
     id = DynamicExtension(data['id']).parseToInt();
     title = DynamicExtension(data['title']).parseToString();
     overview = DynamicExtension(data['overview']).parseToString();
-    posterPath = DynamicExtension(data['poster_path']).parseToString();
-    backdropPath = DynamicExtension(data['backdrop_path']).parseToString();
-    voteAvg = DynamicExtension(data['vote_average']).parseToDouble();
+    posterPath = data['poster_path'];
+    backdropPath = data['backdrop_path'];
+    voteAvg = data['vote_average'];
     voteCount = DynamicExtension(data['vote_count']).parseToInt();
     return this;
   }

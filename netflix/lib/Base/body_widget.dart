@@ -3,6 +3,7 @@ import 'package:netflix/config/Result.dart';
 import 'package:netflix/Screen/DetailMovie/detail_movie_bloc.dart';
 import 'package:netflix/Screen/DetailMovie/detail_state.dart';
 import 'package:netflix/config/Result.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -22,7 +23,7 @@ abstract class ResponseWidget<T> {
           } else if (itemSnapShot.data is Loading &&
               (itemSnapShot.data as Loading).isLoading == true) {
             return Center(
-              child: CircularProgressIndicator(),
+              // child: CircularProgressIndicator(),
             );
           } else if (itemSnapShot.data is ErrorState) {
             return getErrorWidget((itemSnapShot.data as ErrorState).error.message ?? "");
