@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:netflix/Base/toast.dart';
-import 'package:oktoast/oktoast.dart';
 
 import 'BaseBloc.dart';
 import 'loading_dialog.dart';
