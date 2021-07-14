@@ -4,17 +4,17 @@ import 'package:netflix/Config/Result.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
-import 'DetailMovieBloc.dart';
+import '../DetailMovieBloc.dart';
 
-class VideoApp extends StatefulWidget {
+class VideoTrailer extends StatefulWidget {
   String videoLink = "";
-  VideoApp(this.videoLink);
+  VideoTrailer(this.videoLink);
 
   @override
-  _VideoAppState createState() => _VideoAppState(this.videoLink);
+  _VideoTrailerState createState() => _VideoTrailerState(this.videoLink);
 }
 
-class _VideoAppState extends State<VideoApp> {
+class _VideoTrailerState extends State<VideoTrailer> {
   late VideoPlayerController _controller;
   Future<void>? _initializeVideoPlayerFuture;
   late int _playBackTime;
@@ -23,7 +23,7 @@ class _VideoAppState extends State<VideoApp> {
   //The values that are passed when changing quality
   Duration newCurrentPosition = Duration(milliseconds: 0);
 
-  _VideoAppState(this.videoLink);
+  _VideoTrailerState(this.videoLink);
 
 
   @override

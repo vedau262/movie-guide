@@ -2,6 +2,8 @@ import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:netflix/Base/BaseBloc.dart';
+import 'package:netflix/Base/base_view.dart';
 import 'package:netflix/Base/body_widget.dart';
 import 'package:netflix/Base/dependency_injection.dart';
 import 'package:netflix/Base/loading_dialog.dart';
@@ -11,7 +13,7 @@ import 'package:netflix/Model/Movie.dart';
 import 'package:netflix/Model/trailer_model.dart';
 import 'package:netflix/Network/APIResponse.dart';
 import 'package:netflix/Screen/DetailMovie/DetailMovieBloc.dart';
-import 'package:netflix/Screen/DetailMovie/VideoApp.dart';
+import 'package:netflix/Screen/DetailMovie/Components/video_trailer.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:provider/provider.dart';
 
@@ -32,35 +34,25 @@ class Body extends StatefulWidget {
 
 }
 
-class MovieDetailPage extends State<Body>{
+
+class MovieDetailPage extends BaseState<DetailMovieBloc, Body>{
+
   @override
-  void dispose() {
-    super.dispose();
+  DetailMovieBloc getBloc() {
+    return Provider.of<DetailMovieBloc>(context);
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final bloc = Provider.of<DetailMovieBloc>(context);
-    bloc.trailer.listen((value) {
-      if (value is Loading && (value as Loading).isLoading) {
-        LoadingDialog.show(context);
-      } else {
-        LoadingDialog.hide();
-      }
-    });
+  void initBloc() {
     bloc.action.add(GetDetailAction(bloc.movie.id));
   }
 
   @override
-  Widget build(BuildContext context) {
-    final bloc = Provider.of<DetailMovieBloc>(context);
+  Widget buildWidget(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double backdropHeight = screenWidth * 9 / 16;
     Movie movie = bloc.movie;
     print("build detail");
-
-    final VoidCallback? errorCallback;
 
     return SingleChildScrollView(
         scrollDirection: Axis.vertical,
@@ -89,64 +81,7 @@ class MovieDetailPage extends State<Body>{
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(8.0),
-                        child: Image.network(
-                          movie.getPosterPath(),
-                          width: screenWidth / 3,
-                        ),
-                      ),
-
-                      Expanded(child: Container(
-                        margin: EdgeInsets.only(left: 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-
-                            Text("${movie.title}",
-                              overflow: TextOverflow.ellipsis,
-                              // maxLines: 1,
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.redAccent,
-                                height: 3,
-                              ),
-                            ),
-
-                            Text("User score: ${movie.voteAvg}",
-                              style: TextStyle(
-                                fontSize: 15,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ))
-                    ],
-                  ),
-
-                  Text(
-                    "Story",
-                    style: TextStyle(
-                      fontSize: 20,
-                      height: 2,
-                    ),
-                  ),
-
-                  Text(
-                    "${movie.overview}",
-                    style: TextStyle(
-                      fontSize: 15,
-                    ),
-                  ),
-                  Text(
-                    "Trailer:",
-                    style: TextStyle(
-                      fontSize: 20,
-                      height: 2,
-                    ),
-                  ),
+                  MovieDetail(movie),
                   TrailerBody(context, bloc.trailer).getBuilder(),
                   PlayTrailerBody(context, bloc.trailerVideoId).getBuilder(),
                 ],
@@ -155,13 +90,85 @@ class MovieDetailPage extends State<Body>{
           ],
         )
     );
+  }
+}
 
+class MovieDetail extends StatelessWidget{
+  final Movie movie;
+  MovieDetail(this.movie);
+
+  @override
+  Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    return Container(
+      child: Column(
+        children: [
+          Row(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
+                child: Image.network(
+                  movie.getPosterPath(),
+                  width: screenWidth / 3,
+                ),
+              ),
+
+              Expanded(child: Container(
+                margin: EdgeInsets.only(left: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+
+                    Text("${movie.title}",
+                      overflow: TextOverflow.ellipsis,
+                      // maxLines: 1,
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.redAccent,
+                        height: 3,
+                      ),
+                    ),
+
+                    Text("User score: ${movie.voteAvg}",
+                      style: TextStyle(
+                        fontSize: 15,
+                      ),
+                    ),
+                  ],
+                ),
+              ))
+            ],
+          ),
+
+          Text(
+            "Story",
+            style: TextStyle(
+              fontSize: 20,
+              height: 2,
+            ),
+          ),
+
+          Text(
+            "${movie.overview}",
+            style: TextStyle(
+              fontSize: 15,
+            ),
+          ),
+          Text(
+            "Trailer:",
+            style: TextStyle(
+              fontSize: 20,
+              height: 2,
+            ),
+          )
+        ],
+      ),
+    );
   }
 }
 
 class TrailerBody extends ResponseWidget<List<TrailerModel>> {
   TrailerBody(BuildContext context, BehaviorSubject<Result<List<TrailerModel>>> stream) : super(context, stream);
-
 
   @override
   Widget generateResponseBody(List<TrailerModel> data) {
@@ -232,28 +239,14 @@ class TrailerBody extends ResponseWidget<List<TrailerModel>> {
 }
 
 class PlayTrailerBody extends ResponseWidget<String> {
-  PlayTrailerBody(BuildContext context,
-      BehaviorSubject<Result<String>> stream)
-      : super(context, stream);
-
+  PlayTrailerBody(BuildContext context,BehaviorSubject<Result<String>> stream) : super(context, stream);
 
   @override
   Widget generateResponseBody(String data) {
     if (data.isNotEmpty) {
-      return VideoApp(data);
+      return VideoTrailer(data);
     } else {
       return Container();
     }
-  }
-}
-class LikeButton extends StatelessWidget {
-
-  @override
-  Widget build(BuildContext context) {
-    // We have access to it anywhere in the app with this simple call
-    var appInfo = Provider.of<AppInfo>(context);
-    return Container(
-      child: Text(appInfo.welcomeMessage),
-    );
   }
 }
