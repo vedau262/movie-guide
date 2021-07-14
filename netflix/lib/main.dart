@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:netflix/CustomView/Tabbar/BottomTabBar.dart';
 import 'package:netflix/Network/Service/MovieCategory/MovieRepo.dart';
-import 'package:netflix/Screen/DetailMovie/DetailMovieBloc.dart';
-import 'package:netflix/Screen/DetailMovie/DetailMovieRoute.dart';
-import 'package:netflix/Screen/DetailMovie/DetailMovieScreen.dart';
+import 'package:netflix/Screen/DetailMovie/detail_movie_bloc.dart';
+import 'package:netflix/Screen/DetailMovie/detail_movie_route.dart';
+import 'package:netflix/Screen/DetailMovie/detail_movie_screen.dart';
 import 'package:netflix/Screen/Home/HomeBloc.dart';
 import 'package:netflix/Screen/Home/HomeRoute.dart';
 import 'package:netflix/Screen/Tabbar/RootTabbar.dart';
 import 'package:provider/provider.dart';
 
 import 'Base/dependency_injection.dart';
-import 'model/model.dart';
+import 'model/movie.dart';
 
 void main() {
   // startDartIn(appModule);

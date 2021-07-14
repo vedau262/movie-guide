@@ -1,6 +1,7 @@
-import 'package:netflix/Base/extension/string_extension.dart';
+// import 'package:netflix/Base/extension/base_extension.dart';
 import 'package:netflix/config/ConfigBase.dart';
 import 'package:netflix/Network/TypeDecodable.dart';
+import 'package:netflix/utilities.dart';
 
 class Movie implements Decodable<Movie> {
   int? id;

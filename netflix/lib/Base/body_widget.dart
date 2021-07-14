@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:netflix/config/Result.dart';
-import 'package:netflix/Screen/DetailMovie/DetailMovieBloc.dart';
+import 'package:netflix/Screen/DetailMovie/detail_movie_bloc.dart';
 import 'package:netflix/Screen/DetailMovie/detail_state.dart';
 import 'package:netflix/config/Result.dart';
 import 'package:provider/provider.dart';

@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:netflix/config/Result.dart';
 import 'package:netflix/model/home_category.dart';
-import 'package:netflix/model/model.dart';
+import 'package:netflix/model/movie.dart';
 import 'package:netflix/model/trailer.dart';
 import 'package:netflix/Network/APIResponse.dart';
 import 'package:netflix/Network/Service/MovieCategory/MovieTarget.dart';

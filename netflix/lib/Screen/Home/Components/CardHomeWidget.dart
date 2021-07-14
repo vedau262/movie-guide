@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:netflix/config/ConfigBase.dart';
 import 'package:netflix/config/FontConfig.dart';
-import 'package:netflix/model/model.dart';
+import 'package:netflix/model/movie.dart';
 import 'dart:math' as math;
 import 'package:provider/provider.dart';
 import 'package:netflix/Screen/Home/HomeState.dart';

@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:netflix/Base/BaseBloc.dart';
 import 'package:netflix/config/Result.dart';
-import 'package:netflix/model/model.dart';
+import 'package:netflix/model/movie.dart';
 import 'package:netflix/Network/APIResponse.dart';
 import 'package:netflix/Network/Service/MovieCategory/MovieRepo.dart';
 import 'package:netflix/Screen/DetailMovie/detail_state.dart';
