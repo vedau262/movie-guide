@@ -1,5 +1,5 @@
 // import 'package:flutter/cupertino.dart';
-// import 'package:netflix/Model/HomeCategory.dart';
+// import 'package:netflix/Model/home_category.dart';
 //
 // import '../../APIRouteConfigurable.dart';
 // class GetListMovie implements Target {

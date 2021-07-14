@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:netflix/Config/ConfigBase.dart';
-import 'package:netflix/Config/FontConfig.dart';
-import 'package:netflix/Model/HomeCategory.dart';
+import 'package:netflix/config/ConfigBase.dart';
+import 'package:netflix/config/FontConfig.dart';
+import 'package:netflix/model/home_category.dart';
 import 'package:netflix/Screen/Home/HomeBloc.dart';
 import 'package:netflix/Screen/Home/HomeState.dart';
 import 'package:provider/provider.dart';

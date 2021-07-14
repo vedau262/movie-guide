@@ -3,14 +3,12 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:netflix/Base/BaseBloc.dart';
-import 'package:netflix/Config/Result.dart';
-import 'package:netflix/Model/HomeCategory.dart';
-import 'package:netflix/Model/Movie.dart';
+import 'package:netflix/config/Result.dart';
+import 'package:netflix/model/home_category.dart';
+import 'package:netflix/model/model.dart';
 import 'package:netflix/Network/APIResponse.dart';
 import 'package:netflix/Network/Service/MovieCategory/MovieRepo.dart';
-import 'package:netflix/Screen/DetailMovie/DetailMovieBloc.dart';
 import 'package:netflix/Screen/DetailMovie/DetailMovieRoute.dart';
-import 'package:netflix/Screen/DetailMovie/DetailMovieScreen.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'HomeState.dart';

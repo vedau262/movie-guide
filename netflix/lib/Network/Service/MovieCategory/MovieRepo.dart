@@ -1,7 +1,5 @@
-
-
-import 'package:netflix/Config/Result.dart';
-import 'package:netflix/Model/HomeCategory.dart';
+import 'package:netflix/config/Result.dart';
+import 'package:netflix/model/home_category.dart';
 
 import 'MovieService.dart';
 

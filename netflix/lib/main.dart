@@ -10,7 +10,7 @@ import 'package:netflix/Screen/Tabbar/RootTabbar.dart';
 import 'package:provider/provider.dart';
 
 import 'Base/dependency_injection.dart';
-import 'Model/Movie.dart';
+import 'model/model.dart';
 
 void main() {
   // startDartIn(appModule);

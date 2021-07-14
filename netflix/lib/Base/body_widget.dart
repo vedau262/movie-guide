@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:netflix/Config/Result.dart';
+import 'package:netflix/config/Result.dart';
+import 'package:netflix/Screen/DetailMovie/DetailMovieBloc.dart';
+import 'package:netflix/Screen/DetailMovie/detail_state.dart';
+import 'package:netflix/config/Result.dart';
+import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 
 abstract class ResponseWidget<T> {
@@ -32,7 +36,6 @@ abstract class ResponseWidget<T> {
   }
 
   Widget generateResponseBody(T data);
-
 
   Widget getErrorWidget(String mes) {
     return Text(

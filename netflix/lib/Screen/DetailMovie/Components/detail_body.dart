@@ -7,13 +7,14 @@ import 'package:netflix/Base/base_view.dart';
 import 'package:netflix/Base/body_widget.dart';
 import 'package:netflix/Base/dependency_injection.dart';
 import 'package:netflix/Base/loading_dialog.dart';
-import 'package:netflix/Config/ConfigBase.dart';
-import 'package:netflix/Config/Result.dart';
-import 'package:netflix/Model/Movie.dart';
-import 'package:netflix/Model/trailer_model.dart';
+import 'package:netflix/config//ConfigBase.dart';
+import 'package:netflix/config/Result.dart';
+import 'package:netflix/model/model.dart';
 import 'package:netflix/Network/APIResponse.dart';
 import 'package:netflix/Screen/DetailMovie/DetailMovieBloc.dart';
 import 'package:netflix/Screen/DetailMovie/Components/video_trailer.dart';
+import 'package:netflix/model/model.dart';
+import 'package:netflix/model/trailer.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:provider/provider.dart';
 
@@ -44,7 +45,7 @@ class MovieDetailPage extends BaseState<DetailMovieBloc, Body>{
 
   @override
   void initBloc() {
-    bloc.action.add(GetDetailAction(bloc.movie.id));
+    bloc.action.add(GetDetailAction(bloc.movie.id ?? 0));
   }
 
   @override

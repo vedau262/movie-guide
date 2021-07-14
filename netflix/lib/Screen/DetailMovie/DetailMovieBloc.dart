@@ -1,14 +1,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:netflix/Base/BaseBloc.dart';
-import 'package:netflix/Config/Result.dart';
-import 'package:netflix/Model/Movie.dart';
-import 'package:netflix/Model/trailer_model.dart';
+import 'package:netflix/config/Result.dart';
+import 'package:netflix/model/model.dart';
 import 'package:netflix/Network/APIResponse.dart';
 import 'package:netflix/Network/Service/MovieCategory/MovieRepo.dart';
 import 'package:netflix/Screen/DetailMovie/detail_state.dart';
+import 'package:netflix/model/trailer.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class DetailMovieBloc extends BaseBloc {
   final Movie movie;
@@ -31,10 +30,14 @@ class DetailMovieBloc extends BaseBloc {
       if(action is GetDetailAction){
         movieRepo.getListTrailerMovie(action.movieId)
             .doOnListen(() => {
-                trailer.add(Loading(true))
+              isLoading.add(true),
+              trailer.add(Loading(true))
             })
           .delay(Duration(milliseconds: 200))
-          .doOnData((result) => trailer.add(Loading(false)) )
+          .doOnData((result) => {
+            isLoading.add(false),
+            trailer.add(Loading(false))
+          } )
 
           .listen((result) {
             print("listen((result) ${result.toString()}");
@@ -45,6 +48,7 @@ class DetailMovieBloc extends BaseBloc {
             } else  {
               var error = result as ErrorState;
               print("listen((result) ${error.error}");
+              this.error.add(error);
               this.trailer.add(Result.error(error.error));
             }}
         )

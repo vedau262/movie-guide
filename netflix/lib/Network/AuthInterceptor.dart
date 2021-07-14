@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:netflix/Config/ConfigBase.dart';
+import 'package:netflix/config//ConfigBase.dart';
 
 
 

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:netflix/Base/BaseBloc.dart';
-import 'package:netflix/Model/HomeCategory.dart';
-import 'package:netflix/Model/Movie.dart';
+import 'package:netflix/model/home_category.dart';
+import 'package:netflix/model/model.dart';
 import 'package:netflix/Network/APIResponse.dart';
 
 @immutable

@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:netflix/Config/Result.dart';
+import 'package:netflix/config/Result.dart';
 import 'package:rxdart/rxdart.dart';
 
 

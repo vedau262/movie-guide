@@ -1,6 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:netflix/Model/trailer_model.dart';
-import 'package:netflix/Network/APIResponse.dart';
 
 abstract class DetailAction{}
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:netflix/Config/Result.dart';
+import 'package:netflix/config/Result.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 

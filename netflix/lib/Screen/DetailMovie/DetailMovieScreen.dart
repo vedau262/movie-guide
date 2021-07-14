@@ -3,7 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'Components/DetailBody.dart';
+import 'Components/detail_body.dart';
 
 class DetailMovieScreen extends StatelessWidget {
   @override

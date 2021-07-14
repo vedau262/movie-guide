@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:netflix/main.dart';
-import 'package:netflix/Config/ConfigBase.dart';
+import 'package:netflix/config/ConfigBase.dart';
 import 'package:netflix/CustomView/Tabbar/BottomTabBar.dart';
 import 'package:netflix/Network/Service/MovieCategory/MovieRepo.dart';
 import 'package:netflix/Screen/Home/HomeBloc.dart';

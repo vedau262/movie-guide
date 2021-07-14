@@ -1,10 +1,10 @@
 
 import 'dart:convert';
 import 'package:http/http.dart';
-import 'package:netflix/Config/Result.dart';
-import 'package:netflix/Model/HomeCategory.dart';
-import 'package:netflix/Model/Movie.dart';
-import 'package:netflix/Model/trailer_model.dart';
+import 'package:netflix/config/Result.dart';
+import 'package:netflix/model/home_category.dart';
+import 'package:netflix/model/model.dart';
+import 'package:netflix/model/trailer.dart';
 import 'package:netflix/Network/APIResponse.dart';
 import 'package:netflix/Network/Service/MovieCategory/MovieTarget.dart';
 

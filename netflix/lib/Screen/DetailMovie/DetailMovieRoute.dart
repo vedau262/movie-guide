@@ -1,5 +1,5 @@
 import 'package:netflix/Base/BaseRoute.dart';
-import 'package:netflix/Model/Movie.dart';
+import 'package:netflix/model/model.dart';
 
 class DetailMovieRoute extends BaseRoute {
   static const String routeId = "DetailMovieRoute";

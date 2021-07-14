@@ -2,8 +2,8 @@ import 'package:dio/dio.dart';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:netflix/Config/ConfigBase.dart';
-import 'package:netflix/Config/Result.dart';
+import 'package:netflix/config//ConfigBase.dart';
+import 'package:netflix/config/Result.dart';
 import 'package:netflix/Network/APILogInterceptor.dart';
 
 

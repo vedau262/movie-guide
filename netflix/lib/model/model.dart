@@ -1,25 +1,25 @@
-import 'package:netflix/Config/ConfigBase.dart';
+import 'package:netflix/Base/extension/string_extension.dart';
+import 'package:netflix/config/ConfigBase.dart';
 import 'package:netflix/Network/TypeDecodable.dart';
 
 class Movie implements Decodable<Movie> {
-  int id = 0;
-  String title = '';
-  String overview = '';
-  String posterPath = '';
-  String backdropPath = '';
+  int? id;
+  String? title;
+  String? overview;
+  String? posterPath;
+  String? backdropPath;
   num? voteAvg;
   int? voteCount;
 
   @override
   Movie decode(dynamic data) {
-    id = data['id'] ?? 0;
-    title = data['title'] ?? '';
-    overview = data['overview'] ?? '';
-    posterPath = data['poster_path'] ?? '';
-    backdropPath = data['backdrop_path'] ?? '';
-    print(data['vote_average']);
-    voteAvg = data['vote_average'];
-    voteCount = data['vote_count'];
+    id = DynamicExtension(data['id']).parseToInt();
+    title = DynamicExtension(data['title']).parseToString();
+    overview = DynamicExtension(data['overview']).parseToString();
+    posterPath = DynamicExtension(data['poster_path']).parseToString();
+    backdropPath = DynamicExtension(data['backdrop_path']).parseToString();
+    voteAvg = DynamicExtension(data['vote_average']).parseToDouble();
+    voteCount = DynamicExtension(data['vote_count']).parseToInt();
     return this;
   }
 
