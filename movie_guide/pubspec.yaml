@@ -33,6 +33,10 @@ dependencies:
   equatable: ^2.0.3
   mvvm: ^0.1.9
 
+#DI
+  dartin: ^0.1.0
+
+#parse json
 #  run -> /home/user/Documents/dung.tp/flutter/flutter_linux_2.2.3-stable/flutter/bin/flutter pub run build_runner watch
   json_annotation: ^4.0.1
   build_runner: ^2.0.5
