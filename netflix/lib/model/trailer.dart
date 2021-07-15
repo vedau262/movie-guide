@@ -1,4 +1,4 @@
-import 'package:netflix/Network/TypeDecodable.dart';
+import 'package:netflix/network/TypeDecodable.dart';
 
 class TrailerModel implements Decodable<TrailerModel> {
   String? id;
