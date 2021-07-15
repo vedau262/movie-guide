@@ -19,10 +19,26 @@ version: 1.0.0+1
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
+  flutter: ">=1.12.0"
 
 dependencies:
   flutter:
     sdk: flutter
+
+#  fluter:
+#    plugin:
+#      platforms:
+#        android:
+#          package: com.example.netflix
+#          pluginClass: HelloPlugin
+#        ios:
+#          pluginClass: HelloPlugin
+#        macos:
+#          pluginClass: HelloPlugin
+#        web:
+#          pluginClass: HelloPlugin
+#          fileName: hello_web.dart
+
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -41,7 +57,21 @@ dependencies:
   provider: ^5.0.0
   video_player: ^2.1.10
 
+#  json parse
+#  json_annotation: ^4.0.1
+#  json_serializable: ^4.1.3
+#  build_runner: ^2.0.5
 
+#time parse
+  intl: ^0.17.0
+
+#database
+  hive: ^2.0.4
+  hive_flutter: ^1.1.0
+  path_provider: ^2.0.2
+
+#  path_provider_fde:
+#    path: ./plugins/flutter_plugins/path_provider_fde
 
 dev_dependencies:
   flutter_test:
