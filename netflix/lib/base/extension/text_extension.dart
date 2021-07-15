@@ -1,10 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
-class FontConfig {
-  static const String FONT_FAMILY = "yoongothic";
-}
 
-
+final String fontFamily = "yoongothic";
 extension TextExt on Text {
   static Text text(String text,double size, FontWeight fontWeight, Color color, {TextAlign textAlign = TextAlign.start}) {
     return Text(text, style: TextStyleExt.textStyle(size, fontWeight, color), textAlign: textAlign);
@@ -25,7 +22,7 @@ extension TextExt on Text {
 
 extension TextStyleExt on TextStyle {
   static TextStyle textStyle(double size, FontWeight fontWeight, Color color) {
-    return TextStyle(fontFamily: FontConfig.FONT_FAMILY, fontWeight: fontWeight, fontSize: size, color: color);
+    return TextStyle(fontFamily: fontFamily, fontWeight: fontWeight, fontSize: size, color: color);
   }
 }
 

@@ -27,4 +27,4 @@ class StorageManager {
   }
 }
 
-final StorageManager sharePreferences = StorageManager();
+final StorageManager storageManager = StorageManager();

@@ -6,7 +6,7 @@ import 'package:animations/animations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:netflix/config/config_base.dart';
-import 'package:netflix/config/font_config.dart';
+import 'package:netflix/base/extension/text_extension.dart';
 import 'package:netflix/model/movie.dart';
 import 'dart:math' as math;
 import 'package:provider/provider.dart';

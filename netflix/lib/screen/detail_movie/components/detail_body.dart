@@ -1,24 +1,23 @@
-import 'dart:ffi';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:netflix/base/base_bloc.dart';
+import 'package:hive/hive.dart';
 import 'package:netflix/base/base_view.dart';
 import 'package:netflix/base/body_widget.dart';
-import 'package:netflix/base/dependency_injection.dart';
-import 'package:netflix/base/loading_dialog.dart';
+import 'package:netflix/model/contact.dart';
 import 'package:netflix/screen/detail_movie/detail_state.dart';
-import 'package:netflix/config//config_base.dart';
 import 'package:netflix/config/result.dart';
 import 'package:netflix/model/movie.dart';
-import 'package:netflix/network/APIResponse.dart';
 import 'package:netflix/screen/detail_movie/detail_movie_bloc.dart';
 import 'package:netflix/screen/detail_movie/components//video_trailer.dart';
-import 'package:netflix/model/movie.dart';
 import 'package:netflix/model/trailer.dart';
+import 'package:netflix/model/car.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:provider/provider.dart';
 import 'package:netflix/utilities.dart';
+
+import 'new_contact_form.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class DetailBody extends StatelessWidget {
   @override
@@ -27,6 +26,8 @@ class DetailBody extends StatelessWidget {
      body:Body()
     );
   }
+
+
 }
 
 class Body extends StatefulWidget {
@@ -89,6 +90,27 @@ class MovieDetailPage extends BaseState<DetailMovieBloc, Body>{
                   MovieDetail(movie),
                   TrailerBody(context, bloc.trailer).getBuilder(),
                   PlayTrailerBody(context, bloc.trailerVideoId).getBuilder(),
+                  FutureBuilder(
+                      future: Hive.openBox<Contact>('contacts'),
+                      builder: (context, snapshot) {
+                        if(snapshot.connectionState == ConnectionState.done){
+                          if(snapshot.hasError){
+                            return Text(snapshot.error.toString() );
+                          }
+                          return _buildListView();
+                          // return Text("nnnnnnnnnnnnnnnnnnnnnnnnn");
+                        } else {
+                          return Scaffold();
+                        }
+                      }
+                  ),
+                  // Container(
+                  //   child: Container(child: _buildListView()),
+                  // ),
+                  Container(
+                    child: NewContactForm(),
+                  ),
+
                 ],
               ),
             ),
@@ -96,6 +118,58 @@ class MovieDetailPage extends BaseState<DetailMovieBloc, Body>{
         )
     );
   }
+
+  Widget _buildListView() {
+    return ValueListenableBuilder(
+        valueListenable: Hive.box<Contact>('contacts').listenable(),
+        builder: (context, Box<Contact> box, _) {
+          if (box.values.isEmpty) {
+            return Text('data is empty');
+          } else {
+            return Text('data 2222222222222222');
+            /*return ListView.builder(
+              itemCount: box.values.length,
+              itemBuilder: (context, index) {
+                var contact = box.getAt(index);
+                return ListTile(
+                  title: Text(contact!.name.getDefault()),
+                  subtitle: Text(contact.age.toString()),
+                );
+              },
+            );*/
+          }
+
+          // return Text("");
+          /*return ListView.builder(
+              itemCount: contactsBox.length,
+              itemBuilder: (context, index) {
+                final contact = contactsBox.getAt(index) as Contact;
+                return ListTile(
+                    title: Text(contact.name),
+                    subtitle: Text(contact.age.toString()),
+                    trailing:
+                    Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                      IconButton(
+                          icon: Icon(Icons.refresh),
+                          onPressed: () {
+                            contactsBox.putAt(
+                              index,
+                              Contact('${contact.name}*', contact.age + 1),
+                            );
+                          }),
+                      IconButton(
+                          icon: Icon(Icons.delete),
+                          onPressed: () {
+                            contactsBox.deleteAt(index);
+                          })
+                    ]));
+              }
+            );*/
+
+
+        });
+  }
+
 }
 
 class MovieDetail extends StatelessWidget{

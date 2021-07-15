@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:netflix/base/preference/storage_manager.dart';
 import 'package:netflix/config/constants.dart';
+import 'package:netflix/config/shared_preferences.dart';
 import 'package:netflix/utilities.dart';
 
 class ThemeNotifier with ChangeNotifier {
@@ -34,7 +35,7 @@ class ThemeNotifier with ChangeNotifier {
   }
 
   ThemeNotifier() {
-    sharePreferences.readData(keyThemeMode).then((value) {
+    storageManager.readData(keyThemeMode).then((value) {
       print('value read from storage: ' + value.toString());
       var themeMode = value ?? keyLightMode;
       if (themeMode == keyLightMode) {
@@ -53,14 +54,14 @@ class ThemeNotifier with ChangeNotifier {
   void setDarkMode() async {
     _themeData = darkTheme;
     isLightTheme = false;
-    sharePreferences.saveData(keyThemeMode, keyDarkMode);
+    storageManager.saveData(keyThemeMode, keyDarkMode);
     notifyListeners();
   }
 
   void setLightMode() async {
     _themeData = lightTheme;
     isLightTheme = true;
-    sharePreferences.saveData(keyThemeMode, keyLightMode);
+    storageManager.saveData(keyThemeMode, keyLightMode);
     notifyListeners();
   }
 }

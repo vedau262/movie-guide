@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:netflix/config/config_base.dart';
-import 'package:netflix/config/font_config.dart';
+import 'package:netflix/base/extension/text_extension.dart';
 import 'package:netflix/model/home_category.dart';
 import 'package:netflix/screen/home/home_bloc.dart';
 import 'package:netflix/screen/home/home_state.dart';

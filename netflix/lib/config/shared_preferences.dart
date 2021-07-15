@@ -6,31 +6,31 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 /// 用来做shared_preferences的存储
 class SpUtil {
-  static SpUtil? _instance;
+  static SpUtil? mInstance;
   static Future<SpUtil> get instance async {
     return await getInstance();
   }
 
 
-  static SharedPreferences? _spf;
+  static SharedPreferences? mSharedPreferences;
 
   SpUtil._();
 
   Future _init() async {
-    print(_instance);
-    _spf = await SharedPreferences.getInstance();
+    print(mInstance);
+    mSharedPreferences = await SharedPreferences.getInstance();
   }
 
   static Future<SpUtil> getInstance() async  {
-    if (_instance == null) {
-      _instance = new SpUtil._();
-      await _instance!._init();
+    if (mInstance == null) {
+      mInstance = new SpUtil._();
+      await mInstance!._init();
     }
-    return _instance!;
+    return mInstance!;
   }
 
   static bool _beforCheck() {
-    if (_spf == null) {
+    if (mSharedPreferences == null) {
       return true;
     }
     return false;
@@ -48,81 +48,81 @@ class SpUtil {
 
   Set<String>? getKeys() {
     if (_beforCheck()) return null;
-    return _spf?.getKeys();
+    return mSharedPreferences?.getKeys();
   }
 
   get(String key) {
     if (_beforCheck()) return null;
-    return _spf?.get(key);
+    return mSharedPreferences?.get(key);
   }
 
   String? getString(String key) {
     if (_beforCheck()) return null;
-    return _spf?.getString(key);
+    return mSharedPreferences?.getString(key);
   }
 
   Future<bool>? putString(String key, String value) {
     if (_beforCheck()) return null;
-    return _spf?.setString(key, value);
+    return mSharedPreferences?.setString(key, value);
   }
 
   bool? getBool(String key) {
     if (_beforCheck()) return null;
-    return _spf?.getBool(key);
+    return mSharedPreferences?.getBool(key);
   }
 
   Future<bool>? putBool(String key, bool value) {
     if (_beforCheck()) return null;
-    return _spf?.setBool(key, value);
+    return mSharedPreferences?.setBool(key, value);
   }
 
   int? getInt(String key) {
     if (_beforCheck()) return null;
-    return _spf?.getInt(key);
+    return mSharedPreferences?.getInt(key);
   }
 
   Future<bool>? putInt(String key, int value) {
     if (_beforCheck()) return null;
-    return _spf?.setInt(key, value);
+    return mSharedPreferences?.setInt(key, value);
   }
 
   double? getDouble(String key) {
     if (_beforCheck()) return null;
-    return _spf?.getDouble(key);
+    return mSharedPreferences?.getDouble(key);
   }
 
   Future<bool>? putDouble(String key, double value) {
     if (_beforCheck()) return null;
-    return _spf?.setDouble(key, value);
+    return mSharedPreferences?.setDouble(key, value);
   }
 
   List<String> getStringList(String key) {
-    if (_spf != null) {
+    if (mSharedPreferences != null) {
       return [];
     } else {
-      return _spf?.getStringList(key) ?? [];
+      return mSharedPreferences?.getStringList(key) ?? [];
     }
   }
 
   Future<bool>? putStringList(String key, List<String> value) {
     if (_beforCheck()) return null;
-    return _spf?.setStringList(key, value);
+    return mSharedPreferences?.setStringList(key, value);
   }
 
   dynamic getDynamic(String key) {
     if (_beforCheck()) return null;
-    return _spf?.get(key);
+    return mSharedPreferences?.get(key);
   }
 
 
 
   Future<bool>? remove(String key) {
     if (_beforCheck()) return null;
-    return _spf?.remove(key);
+    return mSharedPreferences?.remove(key);
   }
 
   Future<bool>? clear() {
     if (_beforCheck()) return null;
-    return _spf?.clear();
+    return mSharedPreferences?.clear();
   }
 }

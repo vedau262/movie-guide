@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:netflix/custom_view/tabbar/bottom_tab_bar.dart';
 import 'package:netflix/network/service/movie_category/movie_repo.dart';
 import 'package:netflix/screen/detail_movie/detail_movie_bloc.dart';
@@ -7,13 +10,24 @@ import 'package:netflix/screen/detail_movie/detail_movie_screen.dart';
 import 'package:netflix/screen/home/home_bloc.dart';
 import 'package:netflix/screen/home/home_route.dart';
 import 'package:netflix/screen/tabbar/root_tabbar.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'base/dependency_injection.dart';
-import 'base/theme/theme_mamager.dart';
+import 'base/theme/theme_manager.dart';
+import 'model/car.dart';
+import 'model/contact.dart';
 import 'model/movie.dart';
 
-void main() {
+void main() async{
+  // WidgetsFlutterBinding.ensureInitialized();
+  // final appDocumentDirectory =
+  //     await path_provider.getApplicationDocumentsDirectory();
+  // Hive.init(appDocumentDirectory.path);
+  // Hive.registerAdapter(ContactAdapter());
+  // await Hive.openBox<Contact>('contact');
+
+  await openBox();
   // startDartIn(appModule);
   return runApp(ChangeNotifierProvider<ThemeNotifier>(
     create: (_) => new ThemeNotifier(),
@@ -22,6 +36,16 @@ void main() {
   setupLocator();
   runApp(MyApp());
 }
+
+Future openBox() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Directory dir = await getApplicationDocumentsDirectory();
+  Hive.init(dir.path);
+  Hive.registerAdapter(ContactAdapter());
+  await Hive.openBox<Contact>('contacts');
+  return;
+}
+
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -60,47 +84,6 @@ class MyApp extends StatelessWidget {
                 );
             }
           },
-      ),
-    );
-  }
-}
-
-class MyApp_1 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<ThemeNotifier>(
-      builder: (context, theme, _) => MaterialApp(
-        theme: theme.getTheme(),
-        // theme: ThemeData(
-        //   visualDensity: VisualDensity.adaptivePlatformDensity,
-        // ),
-        home: Scaffold(
-          appBar: AppBar(
-            title: Text('Hybrid Theme'),
-          ),
-          body: Row(
-            children: [
-              Container(
-                child: FlatButton(
-                  onPressed: () => {
-                    print('Set Light Theme'),
-                    theme.setLightMode(),
-                  },
-                  child: Text('Set Light Theme'),
-                ),
-              ),
-              Container(
-                child: FlatButton(
-                  onPressed: () => {
-                    print('Set Dark theme'),
-                    theme.setDarkMode(),
-                  },
-                  child: Text('Set Dark theme'),
-                ),
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }

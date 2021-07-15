@@ -10,6 +10,18 @@ class TrailerModel implements Decodable<TrailerModel> {
   int? size;
   String? type;
 
+ /* TrailerModel(
+    {
+      this.id,
+      this.iso_639_1,
+      this.iso_3166_1,
+      this.key,
+      this.name,
+      this.site,
+      this.size,
+      this.type
+    });*/
+  
   /*TrailerModel(result) {
     id = result['id'];
     iso_639_1 = result['iso_639_1'];
@@ -33,5 +45,11 @@ class TrailerModel implements Decodable<TrailerModel> {
     type = data['type'];
     return this;
   }
+
+  // factory TrailerModel.fromJson(Map<String, dynamic> json)
+  // => _$TrailerModelFromJson(json);
+  //
+  // Map<String, dynamic> toJson()
+  // => _$TrailerModelToJson(this);
 
 }
