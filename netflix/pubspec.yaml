@@ -51,7 +51,7 @@ dependencies:
   disposebag: ^1.5.0
   flutter_bloc: ^7.0.1
   animations: ^2.0.0
-  flutter_svg: ^0.19.1
+#  flutter_svg: ^0.19.1
 #  dartin: ^0.1.5
   get_it: ^4.0.2
   provider: ^5.0.0
@@ -60,14 +60,18 @@ dependencies:
 #  json parse
 #  json_annotation: ^4.0.1
 #  json_serializable: ^4.1.3
-#  build_runner: ^2.0.5
+  build_runner: ^2.0.5
+  analyzer: ^1.4.0
+
 
 #time parse
   intl: ^0.17.0
 
 #database
+# run: >D:\Android\flutter\flutter_windows_2.2.2-stable\flutter\bin\flutter pub run build_runner build --delete-conflicting-outputs
   hive: ^2.0.4
   hive_flutter: ^1.1.0
+  hive_generator: ^1.1.0
   path_provider: ^2.0.2
 
 #  path_provider_fde:

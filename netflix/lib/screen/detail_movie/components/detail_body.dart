@@ -10,7 +10,6 @@ import 'package:netflix/model/movie.dart';
 import 'package:netflix/screen/detail_movie/detail_movie_bloc.dart';
 import 'package:netflix/screen/detail_movie/components//video_trailer.dart';
 import 'package:netflix/model/trailer.dart';
-import 'package:netflix/model/car.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:provider/provider.dart';
 import 'package:netflix/utilities.dart';
@@ -95,22 +94,17 @@ class MovieDetailPage extends BaseState<DetailMovieBloc, Body>{
                       builder: (context, snapshot) {
                         if(snapshot.connectionState == ConnectionState.done){
                           if(snapshot.hasError){
-                            return Text(snapshot.error.toString() );
+                            return Container(
+                              child: Text(snapshot.error.toString() ),
+                            );
                           }
-                          return _buildListView();
+                          else return Container(child: _buildListView());
                           // return Text("nnnnnnnnnnnnnnnnnnnnnnnnn");
                         } else {
-                          return Scaffold();
+                          return Container();
                         }
-                      }
+                      },
                   ),
-                  // Container(
-                  //   child: Container(child: _buildListView()),
-                  // ),
-                  Container(
-                    child: NewContactForm(),
-                  ),
-
                 ],
               ),
             ),
@@ -120,54 +114,43 @@ class MovieDetailPage extends BaseState<DetailMovieBloc, Body>{
   }
 
   Widget _buildListView() {
-    return ValueListenableBuilder(
-        valueListenable: Hive.box<Contact>('contacts').listenable(),
-        builder: (context, Box<Contact> box, _) {
-          if (box.values.isEmpty) {
-            return Text('data is empty');
-          } else {
-            return Text('data 2222222222222222');
-            /*return ListView.builder(
-              itemCount: box.values.length,
-              itemBuilder: (context, index) {
-                var contact = box.getAt(index);
-                return ListTile(
-                  title: Text(contact!.name.getDefault()),
-                  subtitle: Text(contact.age.toString()),
-                );
-              },
-            );*/
-          }
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        Container(
+        height: 70,
+        child: ValueListenableBuilder(
+          valueListenable: Hive.box<Contact>('contacts').listenable(),
+          builder: (context, Box<Contact> box, _) {
+            if (box.values.isEmpty) {
+              return Text('data is empty');
+            } else {
+              // return Text('data 2222222222222222');
+              return GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                ),
+                scrollDirection: Axis.horizontal,
+                itemCount: box.values.length,
+                itemBuilder: (context, index) {
+                  var contact = box.getAt(index);
+                  return Container(
 
-          // return Text("");
-          /*return ListView.builder(
-              itemCount: contactsBox.length,
-              itemBuilder: (context, index) {
-                final contact = contactsBox.getAt(index) as Contact;
-                return ListTile(
-                    title: Text(contact.name),
-                    subtitle: Text(contact.age.toString()),
-                    trailing:
-                    Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                      IconButton(
-                          icon: Icon(Icons.refresh),
-                          onPressed: () {
-                            contactsBox.putAt(
-                              index,
-                              Contact('${contact.name}*', contact.age + 1),
-                            );
-                          }),
-                      IconButton(
-                          icon: Icon(Icons.delete),
-                          onPressed: () {
-                            contactsBox.deleteAt(index);
-                          })
-                    ]));
-              }
-            );*/
-
-
-        });
+                    width: 30,
+                    child: Text(
+                      contact!.name.getDefault(),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  );
+                },
+              );
+            }
+          },
+          )
+        ),
+        NewContactForm(),
+      ],
+    );
   }
 
 }

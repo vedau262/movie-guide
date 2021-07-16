@@ -12,10 +12,7 @@ import 'package:netflix/screen/home/home_route.dart';
 import 'package:netflix/screen/tabbar/root_tabbar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-
-import 'base/dependency_injection.dart';
 import 'base/theme/theme_manager.dart';
-import 'model/car.dart';
 import 'model/contact.dart';
 import 'model/favourite.dart';
 import 'model/movie.dart';
@@ -42,8 +39,9 @@ Future openBox() async {
   WidgetsFlutterBinding.ensureInitialized();
   Directory dir = await getApplicationDocumentsDirectory();
   Hive.init(dir.path);
-  // Hive.registerAdapter(ContactAdapter());
+  Hive.registerAdapter(ContactAdapter());
   Hive.registerAdapter(FavouriteAdapter());
+  Hive.registerAdapter(MovieAdapter());
   // await Hive.openBox<Contact>('contacts');
   // await Hive.openBox<Contact>('favourites');
   return;

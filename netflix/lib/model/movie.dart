@@ -1,15 +1,24 @@
 // import 'package:netflix/Base/extension/base_extension.dart';
+import 'package:hive/hive.dart';
 import 'package:netflix/config/config_base.dart';
 import 'package:netflix/network/TypeDecodable.dart';
 import 'package:netflix/utilities.dart';
-
+part 'movie.g.dart';
+@HiveType(typeId: 3)
 class Movie implements Decodable<Movie> {
+  @HiveField(0)
   int? id;
+  @HiveField(1)
   String? title;
+  @HiveField(2)
   String? overview;
+  @HiveField(3)
   String? posterPath;
+  @HiveField(4)
   String? backdropPath;
+  @HiveField(5)
   num? voteAvg;
+  @HiveField(6)
   int? voteCount;
 
   @override

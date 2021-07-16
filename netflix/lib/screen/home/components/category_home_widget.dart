@@ -30,7 +30,7 @@ class _CategoryHomeState extends State<CategoryHome> {
       flex: 0,
       child: Container(
         margin: EdgeInsets.symmetric(vertical: Constant.DEFAULT_PADDING / 2),
-        height: 60,
+        height: 50,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: categories.length,

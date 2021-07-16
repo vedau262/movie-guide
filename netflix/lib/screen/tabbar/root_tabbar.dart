@@ -4,6 +4,7 @@ import 'package:netflix/main.dart';
 import 'package:netflix/config/config_base.dart';
 import 'package:netflix/custom_view/tabbar/bottom_tab_bar.dart';
 import 'package:netflix/network/service/movie_category/movie_repo.dart';
+import 'package:netflix/screen/favourist/favourist_screen.dart';
 import 'package:netflix/screen/home/home_bloc.dart';
 import 'package:netflix/screen/home/home_screen.dart';
 import 'package:provider/provider.dart';
@@ -33,7 +34,7 @@ class _RootTabbarState extends State<RootTabbar> {
         child: HomeScreen(),
       ),
       MyHomePage(title: '123'),
-      MyHomePage(title: '456'),
+      FavouritePage(title: 'FavouritePage'),
       MyHomePage(title: '4215656')
     ];
   }

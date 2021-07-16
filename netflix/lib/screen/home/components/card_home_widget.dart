@@ -5,8 +5,11 @@ import 'dart:ffi';
 import 'package:animations/animations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:netflix/config/config_base.dart';
 import 'package:netflix/base/extension/text_extension.dart';
+import 'package:netflix/config/constants.dart';
+import 'package:netflix/model/favourite.dart';
 import 'package:netflix/model/movie.dart';
 import 'dart:math' as math;
 import 'package:provider/provider.dart';
@@ -33,7 +36,7 @@ class MovieCard extends StatelessWidget {
     return Column(
       children: <Widget>[
         AspectRatio(
-          aspectRatio: 0.65,
+          aspectRatio: 0.7,
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(50),
@@ -53,13 +56,16 @@ class MovieCard extends StatelessWidget {
           flex: 0,
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: Constant.DEFAULT_PADDING),
-            child: Text(
-                movie.title.toString(),
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
-                 ),
-               )
+            child:Text(
+              movie.title.toString(),
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 25,
+              ),
+            ),
+
+
             ),
           ),
         Flexible(
@@ -69,6 +75,31 @@ class MovieCard extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Container(
+                    child: FutureBuilder(
+                      future: Hive.openBox<Favourite>('favourites'),
+                      builder: (context, snapshot) {
+                        if(snapshot.connectionState == ConnectionState.done){
+                          if(snapshot.hasError){
+                            return Container(
+                              child: Text(snapshot.error.toString() ),
+                            );
+                          }
+                          else return Container(child:
+                             IconButton(
+                               icon: Icon(CupertinoIcons.heart),
+                               onPressed: () { addToFavourite(movie);  },
+                             ),
+                          );
+                          // return Text("nnnnnnnnnnnnnnnnnnnnnnnnn");
+                        } else {
+                          return Container(
+                            child: Text("Empty"),
+                          );
+                        }
+                      },
+                    ),
+                  ),
                   Icon(Icons.star),
                   SizedBox(width: 5),
                   Text(
@@ -83,6 +114,11 @@ class MovieCard extends StatelessWidget {
         )
       ],
     );
+  }
+
+  void addToFavourite(Movie movie) {
+      final favouriteBox = Hive.box<Movie>(hiveMovieFileName);
+      favouriteBox.add(movie);
   }
 }
 
