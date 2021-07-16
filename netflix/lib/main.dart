@@ -17,6 +17,7 @@ import 'base/dependency_injection.dart';
 import 'base/theme/theme_manager.dart';
 import 'model/car.dart';
 import 'model/contact.dart';
+import 'model/favourite.dart';
 import 'model/movie.dart';
 
 void main() async{
@@ -33,16 +34,18 @@ void main() async{
     create: (_) => new ThemeNotifier(),
     child: MyApp(),
   ));
-  setupLocator();
-  runApp(MyApp());
+  // setupLocator();
+  // runApp(MyApp());
 }
 
 Future openBox() async {
   WidgetsFlutterBinding.ensureInitialized();
   Directory dir = await getApplicationDocumentsDirectory();
   Hive.init(dir.path);
-  Hive.registerAdapter(ContactAdapter());
-  await Hive.openBox<Contact>('contacts');
+  // Hive.registerAdapter(ContactAdapter());
+  Hive.registerAdapter(FavouriteAdapter());
+  // await Hive.openBox<Contact>('contacts');
+  // await Hive.openBox<Contact>('favourites');
   return;
 }
 

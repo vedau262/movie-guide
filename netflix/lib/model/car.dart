@@ -1,6 +1,7 @@
 import 'package:hive/hive.dart';
+part 'car.g.dart';
 
-@HiveType(typeId: 0)
+@HiveType(typeId: 2)
 class Person extends HiveObject {
 
   @HiveField(0)
