@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
+import 'package:netflix/base/permission_handler.dart';
 import 'package:netflix/config/config_base.dart';
 import 'package:netflix/config/constants.dart';
 import 'package:netflix/model/contact.dart';
@@ -11,6 +12,7 @@ import 'package:netflix/model/movie.dart';
 import 'package:netflix/screen/home/home_bloc.dart';
 import 'package:netflix/screen/home/home_state.dart';
 import 'package:netflix/utilities.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 class FavouritePage extends StatefulWidget {
@@ -45,14 +47,25 @@ class FavouriteState extends State<FavouritePage> {
 
   Future<void> _requestPermission()  async {
     logDebug("requestPermission");
-    bool isGranted ;
-    try {
-      final bool result = await platform.invokeMethod('requestPermission');
-      logDebug("_requestPermission $result");
-      isGranted = result;
-    } on PlatformException catch (e){
-      isGranted = false;
-    }
+    bool isGranted = false ;
+    // try {
+    //   final bool result = await platform.invokeMethod('requestPermission');
+    //   logDebug("_requestPermission $result");
+    //   isGranted = result;
+    // } on PlatformException catch (e){
+    //   isGranted = false;
+    // }
+
+    // if (await Permission.contacts.request().isGranted) {
+    //   logDebug("Permission true");
+    // } else {
+    //   await openAppSettings();
+    //   logDebug("Permission false");
+    // }
+
+    await PermissionService().requestPermission(onPermissionDenied: () {
+      openAppSettings();
+    });
 
     setState(() {
       _readWritePermission = isGranted;
@@ -97,7 +110,7 @@ class FavouriteState extends State<FavouritePage> {
                      ).paddingDirection(horizontal: 20),
                      IconButton(
                        icon: Icon(Icons.get_app),
-                       onPressed: () {
+                       onPressed: ()  async{
                          _requestPermission();
                        },
                      ),
