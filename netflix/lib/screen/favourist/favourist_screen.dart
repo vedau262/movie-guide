@@ -62,7 +62,7 @@ class FavouriteState extends State<FavouritePage> {
         children: [
           Container(
               height: screenHeight,
-              padding: EdgeInsets.symmetric(vertical: 30),
+              padding: EdgeInsets.only(top: 30, bottom: 56),
               child: ValueListenableBuilder(
                 valueListenable: Hive.box<Movie>(hiveMovieFileName).listenable(),
                 builder: (context, Box<Movie> box, _) {
@@ -83,17 +83,18 @@ class FavouriteState extends State<FavouritePage> {
                       itemBuilder: (context, index) {
                         var movie = box.getAt(index);
                         return Container(
-                          padding: EdgeInsets.all(10),
+                          padding: EdgeInsets.all(5),
                           child:  InkWell(
                             onTap: () {
                               bloc.action.add(SelectMovieAction(context, movie!));
                             },
                             child:
                             ClipRRect(
-                              borderRadius: BorderRadius.circular(8.0),
+                              borderRadius: BorderRadius.circular(20.0),
                               child: Image.network(
                                 movie!.getPosterPath(),
                                 width: screenWidth/2,
+                                fit: BoxFit.contain,
                               ),
                             ),
                           ),
