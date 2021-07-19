@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
+import 'package:netflix/config/config_base.dart';
 import 'package:netflix/config/constants.dart';
 import 'package:netflix/model/contact.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -20,6 +22,44 @@ class FavouritePage extends StatefulWidget {
 }
 
 class FavouriteState extends State<FavouritePage> {
+  static const platform = const MethodChannel('samples.flutter.dev/battery');
+  String _batteryLevel = 'No data';
+  bool _readWritePermission = false;
+
+  Future<void> _getBatteryLevel()  async {
+    logDebug("_getBatteryLevel");
+    String batteryLevel ;
+    try {
+      final int result = await platform.invokeMethod('getBatteryLevel');
+      logDebug("_getBatteryLevel $result");
+      batteryLevel = 'Battery level at $result % .';
+    } on PlatformException catch (e){
+      batteryLevel = "Failed to get battery level: '${e.message}'.";
+    }
+
+    setState(() {
+      _batteryLevel =batteryLevel;
+    });
+
+  }
+
+  Future<void> _requestPermission()  async {
+    logDebug("requestPermission");
+    bool isGranted ;
+    try {
+      final bool result = await platform.invokeMethod('requestPermission');
+      logDebug("_requestPermission $result");
+      isGranted = result;
+    } on PlatformException catch (e){
+      isGranted = false;
+    }
+
+    setState(() {
+      _readWritePermission = isGranted;
+    });
+
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -29,8 +69,44 @@ class FavouriteState extends State<FavouritePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: SingleChildScrollView(
-         child: Container(
-           child: FutureBuilder(
+         child: Column(
+           mainAxisSize: MainAxisSize.min,
+           mainAxisAlignment: MainAxisAlignment.start,
+           crossAxisAlignment: CrossAxisAlignment.start,
+           children :[
+             SingleChildScrollView(
+               scrollDirection: Axis.horizontal,
+               child: Row(
+                   mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                   crossAxisAlignment: CrossAxisAlignment.center,
+                   children : [
+                     Text(
+                       _batteryLevel,
+                       overflow: TextOverflow.clip,
+                     ),
+                     IconButton(
+                       icon: Icon(Icons.refresh),
+                       onPressed: () {
+                         _getBatteryLevel();
+                       },
+                     ),
+                     Text(
+                       "read Write Permission: $_readWritePermission",
+                       overflow: TextOverflow.ellipsis,
+                     ).paddingDirection(horizontal: 20),
+                     IconButton(
+                       icon: Icon(Icons.get_app),
+                       onPressed: () {
+                         _requestPermission();
+                       },
+                     ),
+                   ],
+               ),
+             ),
+
+
+             FutureBuilder(
              future: Hive.openBox<Movie>(hiveMovieFileName),
              builder: (context, snapshot) {
                if(snapshot.connectionState == ConnectionState.done){
@@ -48,8 +124,9 @@ class FavouriteState extends State<FavouritePage> {
                }
              },
            ),
-         ),
-        )
+         ]
+        ).marginOnly(top: 30)
+        ),
     );
   }
 
