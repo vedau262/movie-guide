@@ -18,15 +18,8 @@ import 'model/favourite.dart';
 import 'model/movie.dart';
 
 void main() async{
-  // WidgetsFlutterBinding.ensureInitialized();
-  // final appDocumentDirectory =
-  //     await path_provider.getApplicationDocumentsDirectory();
-  // Hive.init(appDocumentDirectory.path);
-  // Hive.registerAdapter(ContactAdapter());
-  // await Hive.openBox<Contact>('contact');
 
-  await openBox();
-  // startDartIn(appModule);
+  await initBox();
   return runApp(ChangeNotifierProvider<ThemeNotifier>(
     create: (_) => new ThemeNotifier(),
     child: MyApp(),
@@ -35,12 +28,12 @@ void main() async{
   // runApp(MyApp());
 }
 
-Future openBox() async {
+Future initBox() async {
   WidgetsFlutterBinding.ensureInitialized();
   Directory dir = await getApplicationDocumentsDirectory();
   Hive.init(dir.path);
-  Hive.registerAdapter(ContactAdapter());
-  Hive.registerAdapter(FavouriteAdapter());
+  // Hive.registerAdapter(ContactAdapter());
+  // Hive.registerAdapter(FavouriteAdapter());
   Hive.registerAdapter(MovieAdapter());
   // await Hive.openBox<Contact>('contacts');
   // await Hive.openBox<Contact>('favourites');

@@ -7,6 +7,7 @@ class Toast {
     BuildContext context) {
     Color textColor = Colors.white;
     Color backgroundColor = Colors.blueAccent;
+    dismiss();
     Toast._createView(msg, context, backgroundColor, textColor);
   }
 
@@ -23,6 +24,7 @@ class Toast {
 
     final themeData = Theme.of(context);
 
+    await Future<dynamic>.delayed(Duration(milliseconds: 100));
     _overlayEntry = new OverlayEntry(
       builder: (BuildContext context) => _ToastAnimatedWidget(
         key: Key(msg),

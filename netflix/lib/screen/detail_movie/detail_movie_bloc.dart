@@ -33,7 +33,7 @@ class DetailMovieBloc extends BaseBloc {
               isLoading.add(true),
               trailer.add(Loading(true))
             })
-          .delay(Duration(milliseconds: 200))
+          // .delay(Duration(milliseconds: 200))
           .doOnData((result) => {
             isLoading.add(false),
             trailer.add(Loading(false))

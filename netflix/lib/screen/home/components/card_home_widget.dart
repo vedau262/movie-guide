@@ -6,6 +6,8 @@ import 'package:animations/animations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:netflix/base/log.dart';
+import 'package:netflix/base/toast.dart';
 import 'package:netflix/config/config_base.dart';
 import 'package:netflix/base/extension/text_extension.dart';
 import 'package:netflix/config/constants.dart';
@@ -15,6 +17,7 @@ import 'dart:math' as math;
 import 'package:provider/provider.dart';
 import 'package:netflix/screen/home/home_state.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import '../home_bloc.dart';
 
@@ -36,7 +39,7 @@ class MovieCard extends StatelessWidget {
     return Column(
       children: <Widget>[
         AspectRatio(
-          aspectRatio: 0.7,
+          aspectRatio: 0.8,
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(50),
@@ -44,8 +47,7 @@ class MovieCard extends StatelessWidget {
               image: DecorationImage(
                 fit: BoxFit.fill,
                 image: NetworkImage(
-                    "${ConfigBase.BASE_IMAGE_URL}${movie.posterPath}",
-
+                  "${ConfigBase.BASE_IMAGE_URL}${movie.posterPath}",
 
                 ),
               ),
@@ -77,29 +79,40 @@ class MovieCard extends StatelessWidget {
                 children: [
                   Container(
                     child: FutureBuilder(
-                      future: Hive.openBox<Favourite>('favourites'),
-                      builder: (context, snapshot) {
+                      future: Hive.openBox<Movie>(hiveMovieFileName),
+                      builder: (context,  AsyncSnapshot<Box<Movie>> snapshot) {
+                        final box = Hive.box<Movie>(hiveMovieFileName);
                         if(snapshot.connectionState == ConnectionState.done){
                           if(snapshot.hasError){
                             return Container(
-                              child: Text(snapshot.error.toString() ),
+                              child: Text(
+                                snapshot.error.toString() ,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             );
                           }
-                          else return Container(child:
-                             IconButton(
-                               icon: Icon(CupertinoIcons.heart),
-                               onPressed: () { addToFavourite(movie);  },
-                             ),
+                          else return Container(
+                            child: ValueListenableBuilder(
+                              valueListenable: Hive.box<Movie>(hiveMovieFileName).listenable(),
+                              builder: (context, Box<Movie> box, _) {
+                              return IconButton(
+                                  color: movie.indexOnList(box.toMap().values.toList())!=-1 ? Colors.red : Colors.lightGreen,
+                                  icon: movie.indexOnList(box.toMap().values.toList())!=-1 ? Icon(CupertinoIcons.heart_fill) : Icon(CupertinoIcons.heart),
+                                  onPressed: () {
+                                    onFavouriteClick(context, movie);
+                                  }
+
+                                );
+                              },
+                            ),
                           );
-                          // return Text("nnnnnnnnnnnnnnnnnnnnnnnnn");
                         } else {
-                          return Container(
-                            child: Text("Empty"),
-                          );
+                          return Container();
                         }
                       },
                     ),
                   ),
+
                   Icon(Icons.star),
                   SizedBox(width: 5),
                   Text(
@@ -116,9 +129,19 @@ class MovieCard extends StatelessWidget {
     );
   }
 
-  void addToFavourite(Movie movie) {
-      final favouriteBox = Hive.box<Movie>(hiveMovieFileName);
+  void onFavouriteClick(BuildContext context, Movie movie){
+    final favouriteBox = Hive.box<Movie>(hiveMovieFileName);
+    var raw = favouriteBox.toMap();
+    var list = raw.values.toList();
+    if(movie.indexOnList(list)==-1){
       favouriteBox.add(movie);
+      logDebug("added -> favouriteBox length: ${favouriteBox.values.length}");
+      Toast.show("Added '${movie.title}' to favourite!!!", context);
+    } else {
+      favouriteBox.deleteAt(movie.indexOnList(list));
+      logDebug("removed -> favouriteBox length: ${favouriteBox.values.length}");
+      Toast.show("Removed '${movie.title}' from favourite!!!", context);
+    }
   }
 }
 

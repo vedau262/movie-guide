@@ -34,7 +34,11 @@ class _RootTabbarState extends State<RootTabbar> {
         child: HomeScreen(),
       ),
       MyHomePage(title: '123'),
-      FavouritePage(title: 'FavouritePage'),
+      Provider<HomeBloc>(
+        create: (_) => HomeBloc(movieRepo),
+        child: FavouritePage(title: 'FavouritePage'),
+        dispose: (_, bloc) => bloc.dispose()
+      ),
       MyHomePage(title: '4215656')
     ];
   }

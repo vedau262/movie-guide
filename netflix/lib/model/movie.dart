@@ -40,4 +40,16 @@ class Movie implements Decodable<Movie> {
   String getBackdropPath() {
     return this.backdropPath!=null ? (ConfigBase.BASE_IMAGE_URL + this.backdropPath.toString()) : ConfigBase.backdropPathDefault;
   }
+  
+  int indexOnList(List<Movie> list){
+    int result = -1;
+    for(Movie element in list){
+      if(element.title==this.title && element.id==id) {
+        result = list.indexOf(element);
+        break;
+      }
+    }
+
+    return result;
+  }
 }

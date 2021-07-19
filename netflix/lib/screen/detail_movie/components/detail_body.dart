@@ -10,6 +10,7 @@ import 'package:netflix/model/movie.dart';
 import 'package:netflix/screen/detail_movie/detail_movie_bloc.dart';
 import 'package:netflix/screen/detail_movie/components//video_trailer.dart';
 import 'package:netflix/model/trailer.dart';
+import 'package:netflix/screen/home/home_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:provider/provider.dart';
 import 'package:netflix/utilities.dart';
@@ -89,22 +90,7 @@ class MovieDetailPage extends BaseState<DetailMovieBloc, Body>{
                   MovieDetail(movie),
                   TrailerBody(context, bloc.trailer).getBuilder(),
                   PlayTrailerBody(context, bloc.trailerVideoId).getBuilder(),
-                  FutureBuilder(
-                      future: Hive.openBox<Contact>('contacts'),
-                      builder: (context, snapshot) {
-                        if(snapshot.connectionState == ConnectionState.done){
-                          if(snapshot.hasError){
-                            return Container(
-                              child: Text(snapshot.error.toString() ),
-                            );
-                          }
-                          else return Container(child: _buildListView());
-                          // return Text("nnnnnnnnnnnnnnnnnnnnnnnnn");
-                        } else {
-                          return Container();
-                        }
-                      },
-                  ),
+                  // buildContactList(),
                 ],
               ),
             ),
@@ -113,6 +99,24 @@ class MovieDetailPage extends BaseState<DetailMovieBloc, Body>{
     );
   }
 
+  Widget buildContactList() {
+    return FutureBuilder(
+      future: Hive.openBox<Contact>('contacts'),
+      builder: (context, snapshot) {
+        if(snapshot.connectionState == ConnectionState.done){
+          if(snapshot.hasError){
+            return Container(
+              child: Text(snapshot.error.toString() ),
+            );
+          }
+          else return Container(child: _buildListView());
+          // return Text("nnnnnnnnnnnnnnnnnnnnnnnnn");
+        } else {
+          return Container();
+        }
+      },
+    );
+  }
   Widget _buildListView() {
     return Column(
       mainAxisSize: MainAxisSize.max,
