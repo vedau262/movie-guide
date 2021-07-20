@@ -15,6 +15,8 @@ import 'package:netflix/utilities.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
+import '../theme_bloc.dart';
+
 class FavouritePage extends StatefulWidget {
   FavouritePage({Key? key, required this.title}) : super(key: key);
   final String title;

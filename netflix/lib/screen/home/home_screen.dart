@@ -11,6 +11,8 @@ import 'package:netflix/config/constants.dart';
 import 'package:netflix/config/shared_preferences.dart';
 import 'package:netflix/screen/home/components/card_home_widget.dart';
 import 'package:netflix/screen/home/components/category_home_widget.dart';
+import 'package:netflix/screen/theme_action.dart';
+import 'package:netflix/screen/theme_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:netflix/utilities.dart';
 
@@ -32,16 +34,11 @@ class HomeScreen extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: Constant.DEFAULT_PADDING / 2),
           icon: Icon(Icons.nightlight_round),
           onPressed: () {
-            final themeChange = Provider.of<ThemeNotifier>(context, listen: false);
-            print("current theme is light: ${themeChange.isLightTheme}");
-            if(themeChange.isLightTheme){
-              themeChange.setDarkMode();
-            } else {
-              themeChange.setLightMode();
-            }
-            SpUtil.getInstance().then((value) { useValue(value); });
-            // String a = util.getString(keyThemeMode).getDefault();
-            // print("=========== $a");
+            // final themeChange = Provider.of<ThemeBloc>(context, listen: false);
+            final themeBloc = context.read<ThemeBloc>();
+            logDebug("current theme is light: ${themeBloc.isLightTheme.value} => set to ${!themeBloc.isLightTheme.value}");
+            themeBloc.action.add(SetThemeAction(!themeBloc.isLightTheme.value));
+            // SpUtil.getInstance().then((value) { useValue(value); });
           },
         ),
       actions: <Widget>[
@@ -58,13 +55,13 @@ class HomeScreen extends StatelessWidget {
   }
 
   void useValue(SpUtil value) {
-    String a = value.getString(keyThemeMode).getDefault();
+    bool isLightMode = value.getBool(keyThemeMode).getDefault();
     int timeStamp = DateTime.now().millisecondsSinceEpoch;
-    String b = (timeStamp).timeFormat();
-    logDebug("=============== $a");
-    logDebug("=============== ${ Intl().locale}");
-    logDebug("=============== $timeStamp");
-    logDebug("=============== ${b}");
+    String b = timeStamp.timeFormat();
+    logDebug("=============== isLightMode $isLightMode");
+    logDebug("=============== Intl().locale ${ Intl().locale}");
+    logDebug("=============== timeStamp $timeStamp");
+    logDebug("=============== timeStamp.timeFormat() ${b}");
     
     String time = '2021-07-15';
     String time1 = '1626325341670';

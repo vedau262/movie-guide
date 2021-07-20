@@ -37,8 +37,8 @@ class ThemeNotifier with ChangeNotifier {
   ThemeNotifier() {
     storageManager.readData(keyThemeMode).then((value) {
       print('value read from storage: ' + value.toString());
-      var themeMode = value ?? keyLightMode;
-      if (themeMode == keyLightMode) {
+      var isLight = value ?? true;
+      if (isLight == true) {
         _themeData = lightTheme;
         isLightTheme = true;
         print('setting light theme');
@@ -54,14 +54,14 @@ class ThemeNotifier with ChangeNotifier {
   void setDarkMode() async {
     _themeData = darkTheme;
     isLightTheme = false;
-    storageManager.saveData(keyThemeMode, keyDarkMode);
+    storageManager.saveData(keyThemeMode, isLightTheme);
     notifyListeners();
   }
 
   void setLightMode() async {
     _themeData = lightTheme;
     isLightTheme = true;
-    storageManager.saveData(keyThemeMode, keyLightMode);
+    storageManager.saveData(keyThemeMode, isLightTheme);
     notifyListeners();
   }
 }

@@ -10,6 +10,7 @@ import 'package:netflix/screen/detail_movie/detail_movie_screen.dart';
 import 'package:netflix/screen/home/home_bloc.dart';
 import 'package:netflix/screen/home/home_route.dart';
 import 'package:netflix/screen/tabbar/root_tabbar.dart';
+import 'package:netflix/screen/theme_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'base/theme/theme_manager.dart';
@@ -18,12 +19,20 @@ import 'model/favourite.dart';
 import 'model/movie.dart';
 
 void main() async{
-
   await initBox();
-  return runApp(ChangeNotifierProvider<ThemeNotifier>(
-    create: (_) => new ThemeNotifier(),
-    child: MyApp(),
-  ));
+  return runApp(
+  // ChangeNotifierProvider<ThemeNotifier>(
+  //   create: (_) => new ThemeNotifier(),
+  //   child: MyApp(),
+  // )
+
+    Provider<ThemeBloc>(
+        create: (_) => ThemeBloc(),
+        dispose: (_, bloc) => bloc.dispose(),
+        child: MyApp(),
+    )
+
+  );
   // setupLocator();
   // runApp(MyApp());
 }
@@ -45,7 +54,47 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return Consumer<ThemeNotifier>(
+    final bloc = context.read<ThemeBloc>();
+    return StreamBuilder<ThemeData>(
+        stream: bloc.theme,
+        builder: (context, data) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Movie App',
+            theme: data.data,
+            // theme: ThemeData(
+            //   visualDensity: VisualDensity.adaptivePlatformDensity,
+            // ),
+            initialRoute: HomeRoute.routeId,
+            onGenerateRoute: (RouteSettings settings) {
+              switch (settings.name) {
+                case HomeRoute.routeId:
+                  return MaterialPageRoute(
+                      builder: (context) {
+                        return RootTabbar();
+                      }
+                  );
+                case DetailMovieRoute.routeId:
+                  var arguments = settings.arguments as Movie;
+                  return MaterialPageRoute(
+                    builder: (context) {
+                      return MultiProvider(
+                        providers: [
+                          Provider<DetailMovieBloc>(
+                              create: (_) => DetailMovieBloc(arguments),
+                              dispose: (_, bloc) => bloc.dispose()),
+                        ],
+                        child: DetailMovieScreen(),
+                      );
+                    },
+                  );
+              }
+            },
+          );
+        }
+    );
+
+    /*return Consumer<ThemeNotifier>(
         builder: (context, theme, _) => MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Movie App',
@@ -79,7 +128,7 @@ class MyApp extends StatelessWidget {
             }
           },
       ),
-    );
+    );*/
   }
 }
 
@@ -103,17 +152,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {

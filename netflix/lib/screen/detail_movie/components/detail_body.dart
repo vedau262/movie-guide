@@ -11,6 +11,7 @@ import 'package:netflix/screen/detail_movie/detail_movie_bloc.dart';
 import 'package:netflix/screen/detail_movie/components//video_trailer.dart';
 import 'package:netflix/model/trailer.dart';
 import 'package:netflix/screen/home/home_bloc.dart';
+import 'package:netflix/screen/theme_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:provider/provider.dart';
 import 'package:netflix/utilities.dart';
@@ -54,7 +55,7 @@ class MovieDetailPage extends BaseState<DetailMovieBloc, Body>{
     double screenWidth = MediaQuery.of(context).size.width;
     double backdropHeight = screenWidth * 9 / 16;
     Movie movie = bloc.movie;
-    print("build detail");
+    logDebug("build detail");
 
     return SingleChildScrollView(
         scrollDirection: Axis.vertical,

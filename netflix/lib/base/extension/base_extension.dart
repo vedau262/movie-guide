@@ -35,3 +35,9 @@ extension DoubleExtension on double? {
     return this?? 0.0;
   }
 }
+
+extension BoolExtension on bool? {
+  bool getDefault(){
+    return this?? false;
+  }
+}
