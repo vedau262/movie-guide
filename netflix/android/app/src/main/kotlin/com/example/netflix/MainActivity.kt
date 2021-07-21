@@ -18,16 +18,16 @@ import io.flutter.plugin.common.MethodChannel
 
 class MainActivity: FlutterActivity() {
     private val TAG = "MainActivity android"
-    private val CHANNEL = "samples.flutter.dev/battery"
 
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
-        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler { call, result ->
 
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, favouriteChannelName).setMethodCallHandler { call, result ->
             // Note: this method is invoked on the main thread.
             when (call.method) {
-                "getBatteryLevel" -> {
-                    Log.d(TAG, "call.method getBatteryLevel");
+                getBatteryLevelMethodName -> {
+                    val argument = call.argument<String>("key_put_string");
+                    Log.d(TAG, "call.method getBatteryLevel with argument: " + argument);
                     val batteryLevel = getBatteryLevel()
                     if (batteryLevel != -1) {
                         result.success(batteryLevel)
@@ -35,7 +35,7 @@ class MainActivity: FlutterActivity() {
                         result.error("UNAVAILABLE", "Battery level not available.", null)
                     }
                 }
-                "requestPermission" -> {
+                requestPermissionMethodName -> {
                     result.success(isReadStoragePermissionGranted() && isWriteStoragePermissionGranted());
                 }
 
@@ -94,4 +94,11 @@ class MainActivity: FlutterActivity() {
         Log.d(TAG, "getBatteryLevel : batteryLevel $batteryLevel");
         return batteryLevel
     }
+
+    companion object {
+        const val favouriteChannelName = "favouriteChannelName";
+        const val getBatteryLevelMethodName = "getBatteryLevel";
+        const val requestPermissionMethodName = "requestPermission"
+    }
 }
+

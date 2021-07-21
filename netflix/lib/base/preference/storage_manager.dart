@@ -1,8 +1,10 @@
+import 'package:netflix/base/log.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StorageManager {
 
   void saveData(String key, dynamic value) async {
+    logDebug("StorageManager saveData $key $value");
     final prefs = await SharedPreferences.getInstance();
     if (value is int) {
       prefs.setInt(key, value);
@@ -11,7 +13,7 @@ class StorageManager {
     } else if (value is bool) {
       prefs.setBool(key, value);
     } else {
-      print("Invalid Type");
+      logDebug("StorageManager Invalid Type");
     }
   }
 

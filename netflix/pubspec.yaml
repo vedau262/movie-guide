@@ -53,10 +53,14 @@ dependencies:
   animations: ^2.0.0
 #  flutter_svg: ^0.19.1
 #  dartin: ^0.1.5
-  get_it: ^4.0.2
+  get_it: ^7.2.0
   provider: ^5.0.0
   video_player: ^2.1.10
   permission_handler: ^8.1.3
+
+  firebase_analytics: ^8.2.0
+  firebase_messaging: ^10.0.0
+  firebase_core: ^1.4.0
 
 #  json parse
 #  json_annotation: ^4.0.1

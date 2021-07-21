@@ -1,5 +1,7 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:netflix/base/push_notification_service.dart';
 import 'package:netflix/main.dart';
 import 'package:netflix/config/config_base.dart';
 import 'package:netflix/custom_view/tabbar/bottom_tab_bar.dart';
@@ -7,6 +9,8 @@ import 'package:netflix/network/service/movie_category/movie_repo.dart';
 import 'package:netflix/screen/favourist/favourist_screen.dart';
 import 'package:netflix/screen/home/home_bloc.dart';
 import 'package:netflix/screen/home/home_screen.dart';
+import 'package:netflix/screen/match/match_bloc.dart';
+import 'package:netflix/screen/match/match_screen.dart';
 import 'package:provider/provider.dart';
 
 class RootTabbar extends StatefulWidget {
@@ -19,10 +23,15 @@ class RootTabbar extends StatefulWidget {
 class _RootTabbarState extends State<RootTabbar> {
   List<Widget> listScreens = [];
   int _currentIndex = 0;
+  String messageTitle = "Empty";
+  String notificationAlert = "alert";
+  // FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+  PushNotificationService service = PushNotificationService();
 
   @override
   void initState() {
     super.initState();
+    service.setupInteractedMessage();
     MovieRepo movieRepo = MovieRepo();
     listScreens = [
       MultiProvider(
@@ -33,7 +42,12 @@ class _RootTabbarState extends State<RootTabbar> {
         ],
         child: HomeScreen(),
       ),
-      MyHomePage(title: '123'),
+      Provider<MatchBloc>(
+          create: (_) => MatchBloc(),
+          child: MatchPage(title: 'MatchPage'),
+          dispose: (_, bloc) => bloc.dispose()
+      ),
+
       Provider<HomeBloc>(
         create: (_) => HomeBloc(movieRepo),
         child: FavouritePage(title: 'FavouritePage'),

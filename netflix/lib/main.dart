@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:netflix/custom_view/tabbar/bottom_tab_bar.dart';
@@ -14,12 +16,23 @@ import 'package:netflix/screen/theme_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'base/theme/theme_manager.dart';
+import 'config/constants.dart';
 import 'model/contact.dart';
 import 'model/favourite.dart';
 import 'model/movie.dart';
+import 'utilities.dart';
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async{
+  logDebug("Handling a background message title: ${message.notification!.title}");
+  logDebug("Handling a background message body: ${message.notification!.body}");
+  logDebug("Handling a background message body: ${message.data}");
+  storageManager.saveData(keyThemeMode, true);
+}
 
 void main() async{
   await initBox();
+  await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   return runApp(
   // ChangeNotifierProvider<ThemeNotifier>(
   //   create: (_) => new ThemeNotifier(),
@@ -56,7 +69,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final bloc = context.read<ThemeBloc>();
     return StreamBuilder<ThemeData>(
-        stream: bloc.theme,
+        stream: bloc.theme.stream,
         builder: (context, data) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
@@ -154,6 +167,11 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
   @override
+  void initState() {
+    super.initState();
+
+  }
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
@@ -161,7 +179,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'You have pushed the button this many times:',
+              '_counter: $_counter',
             ),
             Text(
               '$_counter',

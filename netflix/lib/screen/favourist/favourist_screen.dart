@@ -26,7 +26,7 @@ class FavouritePage extends StatefulWidget {
 }
 
 class FavouriteState extends State<FavouritePage> {
-  static const platform = const MethodChannel('samples.flutter.dev/battery');
+  static const platform = const MethodChannel(favouriteChannelName);
   String _batteryLevel = 'No data';
   bool _readWritePermission = false;
 
@@ -34,7 +34,7 @@ class FavouriteState extends State<FavouritePage> {
     logDebug("_getBatteryLevel");
     String batteryLevel ;
     try {
-      final int result = await platform.invokeMethod('getBatteryLevel');
+      final int result = await platform.invokeMethod(getBatteryLevelMethodName,{'key_put_string': 'value here'});
       logDebug("_getBatteryLevel $result");
       batteryLevel = 'Battery level at $result % .';
     } on PlatformException catch (e){
@@ -51,7 +51,7 @@ class FavouriteState extends State<FavouritePage> {
     logDebug("requestPermission");
     bool isGranted = false ;
     // try {
-    //   final bool result = await platform.invokeMethod('requestPermission');
+    //   final bool result = await platform.invokeMethod(requestPermissionMethodName);
     //   logDebug("_requestPermission $result");
     //   isGranted = result;
     // } on PlatformException catch (e){
@@ -65,7 +65,7 @@ class FavouriteState extends State<FavouritePage> {
     //   logDebug("Permission false");
     // }
 
-    await PermissionService().requestPermission(onPermissionDenied: () {
+     isGranted = await PermissionService().requestPermission(onPermissionDenied: () {
       openAppSettings();
     });
 
