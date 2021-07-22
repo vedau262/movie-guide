@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:netflix/custom_view/tabbar/bottom_tab_bar.dart';
 import 'package:netflix/network/service/movie_category/movie_repo.dart';
@@ -21,6 +22,7 @@ import 'model/contact.dart';
 import 'model/favourite.dart';
 import 'model/movie.dart';
 import 'utilities.dart';
+
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async{
   logDebug("Handling a background message title: ${message.notification!.title}");
@@ -173,21 +175,16 @@ class _MyHomePageState extends State<MyHomePage> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              '_counter: $_counter',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      )
+    // This is used in the platform side to register the view.
+    final String viewType = 'hybrid-view-type';
+    // Pass parameters to the platform side.
+    final Map<String, dynamic> creationParams = <String, dynamic>{};
+
+    return AndroidView(
+      viewType: viewType,
+      layoutDirection: TextDirection.ltr,
+      creationParams: creationParams,
+      creationParamsCodec: const StandardMessageCodec(),
     );
   }
 }

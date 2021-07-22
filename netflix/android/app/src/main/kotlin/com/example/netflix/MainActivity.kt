@@ -1,26 +1,30 @@
 package com.example.netflix
 
 import android.Manifest
-import android.content.Context
-import android.content.ContextWrapper
-import android.content.Intent
-import android.content.IntentFilter
+import android.content.*
 import android.content.pm.PackageManager
 import android.os.BatteryManager
 import android.os.Build
 import android.util.Log
 import androidx.annotation.NonNull
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.plugin.common.EventChannel
+import io.flutter.plugin.common.EventChannel.EventSink
 import io.flutter.plugin.common.MethodChannel
+
 
 class MainActivity: FlutterActivity() {
     private val TAG = "MainActivity android"
 
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
+
+        flutterEngine
+                .platformViewsController
+                .registry
+                .registerViewFactory("hybrid-view-type", NativeViewFactory())
 
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, favouriteChannelName).setMethodCallHandler { call, result ->
             // Note: this method is invoked on the main thread.
@@ -44,6 +48,38 @@ class MainActivity: FlutterActivity() {
                     result.notImplemented()
                 }
 
+            }
+        }
+
+        EventChannel(flutterEngine.dartExecutor, CHARGING_CHANNEL).setStreamHandler(
+                object : EventChannel.StreamHandler {
+                    private var chargingStateChangeReceiver: BroadcastReceiver? = null
+                    override fun onListen(arguments: Any?, events: EventSink?) {
+                        chargingStateChangeReceiver = events?.let { createChargingStateChangeReceiver(it) }
+                        registerReceiver(
+                                chargingStateChangeReceiver, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
+                    }
+
+                    override fun onCancel(arguments: Any?) {
+                        unregisterReceiver(chargingStateChangeReceiver)
+                        chargingStateChangeReceiver = null
+                    }
+                }
+        )
+
+    }
+
+    private fun createChargingStateChangeReceiver(events: EventSink): BroadcastReceiver? {
+        return object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent) {
+                val status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1)
+                if (status == BatteryManager.BATTERY_STATUS_UNKNOWN) {
+                    events.error("UNAVAILABLE", "Charging status unavailable", null)
+                } else {
+                    val isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
+                            status == BatteryManager.BATTERY_STATUS_FULL
+                    events.success(if (isCharging) "charging" else "discharging")
+                }
             }
         }
     }
@@ -96,6 +132,7 @@ class MainActivity: FlutterActivity() {
     }
 
     companion object {
+        const val CHARGING_CHANNEL = "CHARGING_CHANNEL";
         const val favouriteChannelName = "favouriteChannelName";
         const val getBatteryLevelMethodName = "getBatteryLevel";
         const val requestPermissionMethodName = "requestPermission"

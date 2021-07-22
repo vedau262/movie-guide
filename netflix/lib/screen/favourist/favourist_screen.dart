@@ -27,7 +27,9 @@ class FavouritePage extends StatefulWidget {
 
 class FavouriteState extends State<FavouritePage> {
   static const platform = const MethodChannel(favouriteChannelName);
+  static const EventChannel eventChannel = EventChannel(CHARGING_CHANNEL);
   String _batteryLevel = 'No data';
+  String _chargingStatus = 'Battery status: unknown.';
   bool _readWritePermission = false;
 
   Future<void> _getBatteryLevel()  async {
@@ -81,6 +83,26 @@ class FavouriteState extends State<FavouritePage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    eventChannel.receiveBroadcastStream().listen(_onEvent, onError: _onError);
+  }
+
+  void _onEvent(Object? event) {
+    logDebug("_onEvent $event");
+    setState(() {
+      _chargingStatus = "Battery status: ${event == 'charging' ? '' : 'dis'}charging.";
+    });
+  }
+
+  void _onError(Object error) {
+    logDebug("_onError $error");
+    setState(() {
+      _chargingStatus = 'Battery status: unknownnnnnnnnnnnnnnnnnn.';
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: SingleChildScrollView(
@@ -116,6 +138,7 @@ class FavouriteState extends State<FavouritePage> {
                          _requestPermission();
                        },
                      ),
+                     Text(_chargingStatus),
                    ],
                ),
              ),
